@@ -469,7 +469,7 @@ We saw before that $X\mapsto \sum_i K_i X K_i^{\dagger}$ are CP. The converse is
     \begin{align}
         r(T) \leq \text{dim}\mathcal{H}_1\cdot\text{dim}\mathcal{H}_2
     \end{align}
-    \item There exists a Kraus representation with $r=\text{rank}\tau$ operators such that $\langle K_i,K_j\rangle=\text{tr}(K_i^{\dagger} K_j) = c_i \delta_{i,j}$ for some constant $c_i$ that results from using an unnormalized $\gamma$ state. 
+    \item There exists a Kraus representation with $r=\text{rank}(\tau)$ operators such that $\langle K_i,K_j\rangle=\text{tr}(K_i^{\dagger} K_j) = c_i \delta_{i,j}$ for some constant $c_i$ that results from using an unnormalized $\gamma$ state. 
     \item $T$ is TP iff $\sum_i K_i^{\dagger}K_i = \mathbb{I}_1$, $T$ is unital iff $\sum_i K_i K_i^{\dagger} = \mathbb{I}_2$
     \item Any two Kraus representations $\ket{K_i}_i$ and $\{L_i\}_i$ of a channel $T$ are related by a unitary $U$ via 
     \begin{align}
@@ -485,16 +485,131 @@ We saw before that $X\mapsto \sum_i K_i X K_i^{\dagger}$ are CP. The converse is
     \item $\leftarrow$ is obvious. Going the other way, we know $T$ is CP $\Leftrightarrow$ $\tau \geq 0$, by prop 4. 
     \begin{align}
         \tau &=\sum_i \lambda_i \ket{\psi_i}\bra{\psi_i} \\
-        &= \sum_i \ket{\varphi_i}\bra{\varphi_i}, \quad \text{ where } \ket{varphi_i}=\sqrt{\lambda_i} \ket{\psi_i}\\
+        &= \sum_i \ket{\varphi_i}\bra{\varphi_i}, \quad \text{ where } \ket{\varphi_i}=\sqrt{\lambda_i} \ket{\psi_i}\\
         &= \sum_i (\mathbb{I}\otimes K_i \ket{\gamma}\bra{\gamma} (\mathbb{I}\otimes K_i^{\dagger}))\\
         &=(\mathbb{I}\otimes T)(\gamma) \quad \text{ with } T= \sum_i K_i \cdot K_i^{\dagger}
     \end{align}
-    \item Clear from proof of 1.): $r=\text{rank}(\tau) \implies$ at least $r$ pure states in the decomposition of $\tau$. This implies that there are at least $r$ Kraus operators. 
+    
+    We know $X=\sum_i \ket{\psi_i}\bra{\psi_i}$ for some $\{\ket{\psi_i}\}_i$. Then $X\geq 0 \Leftrightarrow$ $\braket{\varphi|X|\varphi} \geq 0 \quad \forall \ket{\varphi}$. This implies 
+    \begin{align}
+        \bra{\varphi}\left(\sum_i \ket{\psi_i}\bra{\psi_i}\right)\ket{\varphi} = \sum_i |\braket{\varphi|\psi_i}|^2 \geq 0
+    \end{align}
+    
+    
+    \item Clear from proof of 1.) $r=\text{rank}(\tau) \implies$ at least $r$ pure states in the decomposition of $\tau$. This implies that there are at least $r$ Kraus operators. 
+    \item There exists a Kraus representation with $r=\text{rank}(\tau)$ operators such that $\langle K_i,K_j\rangle=\text{tr}(K_i^{\dagger} K_j) = c_i \delta_{i,j}$ for some constant $c_i$ that results from using an unnormalized $\gamma$ state. 
+    
+    \begin{align}
+        \tau &= \sum_i \ket{\varphi_i}\bra{\varphi_i} \quad \ket{\varphi_i}=\sqrt{\lambda_i} \ket{\chi_i} \\
+        &=\sum_i (\mathbb{I} \otimes L_i) \ket{\gamma}\bra{\gamma} (\mathbb{I}\otimes L_i)^{\dagger} \\
+        \Rightarrow \quad  T &= \sum_{i=1}^{r(\tau)}L_i \cdot L_i^{\dagger}
+    \end{align}
+    We also need to show $\braket{L_i,L_j}=c \delta_{ij}$. We know
+    \begin{align}
+        \ket{\varphi_i} = (\mathbb{I}_1 \otimes L_i)\ket{\gamma}
+    \end{align}
+    so, we can write
+    \begin{align}
+        \braket{\varphi_i|\varphi_j}&= \bra{\gamma}\left(\mathbb{I}_1 \otimes L_i^{\dagger}\right)\left(\mathbb{I}\otimes L_i\right)\ket{\gamma} \\
+        &= \sum_{k,l} \braket{k|l} \bra{k}L_i^{\dagger} L_j \ket{l}\\
+        &= \sum_k c \bra{k} L_i^{\dagger}L_j \ket{k} \\
+        &= c\text{tr}\left(L_i^{\dagger} L_j\right)
+        &= c \delta_{ij}
+    \end{align}
+    
+    \item $T$ is TP iff $\sum_i K_i^{\dagger}K_i = \mathbb{I}_1$, $T$ is unital iff $\sum_i K_i K_i^{\dagger} = \mathbb{I}_2$.
+    
+    \begin{align}
+        \text{tr}(T(X)) &= \sum_i \text{tr} \left(K_i X K_i^{\dagger}\right) \\
+        &= \sum_i \text{tr} \left(K_i^{\dagger} K_i X\right)\\
+        &= \text{tr}\left(\sum_i K_i^{\dagger} K_i X\right) \\
+        &=\text{tr}X \quad \forall X\\
+        \Leftrightarrow & \sum_i K_i^{\dagger}K_i = \mathbb{I}_1
+    \end{align}
+    The other way is even easier. 
+    \begin{align}
+        T(\mathbb{I}_1) &= \sum_i K_i \mathbb{I} K_i^{\dagger} \\
+        &= \sum_i K_i K_i^{\dagger} \\
+        &= \mathbb{I}_2.
+    \end{align}
+    
+    \item Any two Kraus representations $\ket{K_i}_i$ and $\{L_i\}_i$ of a channel $T$ are related by a unitary $U$ via 
+    \begin{align}
+        K_i = \sum_{i,j} U_{ij}L_j.
+    \end{align}
+    This means that $T(X)=\sum_i K_i X K_i^{\dagger} = \sum_j L_j X L_j^{\dagger}$.
+    
+    \textbf{Claim}: $\sum_i \ket{\psi_i}\bra{\psi_i} = \sum_j \ket{\varphi_j} \bra{\varphi_j}$ iff there exists a unitary, $U$, with $\ket{\psi_i} = \sum_j U_{ij} \ket{\varphi_j}$.
+    
+    \begin{proof}
+    $\ket{\Psi}=\sum_i \ket{\psi_i} \otimes \ket{i}$, where $\{\ket{i}\}$ is a reference systems' orthonormal basis. Also, $\ket{\Phi}=\sum_j \ket{\varphi_j} \otimes \ket{j}$. Then, there always exists an isometry $V$ such that $(\mathbb{I}\otimes V) \ket{\Psi} = \ket{\Phi}$.
+    \end{proof}
+    The above result is useful for our proof because the isometry $V$ above can always be extended to a unitary.
+    \begin{align}
+        \ket{\varphi_i}&= \left(\mathbb{I} \otimes \bra{i}\right)\ket{\Phi} \\
+        &= \left(\mathbb{I}\otimes \bra{i}\right)(\mathbb{I}\otimes V)\ket{\Psi} \\
+        &= \left(\mathbb{I}\otimes \bra{i}\right)(\mathbb{I}\otimes V)\sum_j \ket{\psi_j} \otimes \ket{j}\\
+        &= \sum_j \ket{\psi_j} \bra{i|V|j}\\
+        &= \sum_j V_{ij} \ket{\psi_j}
+    \end{align}
 \end{enumerate}
 \end{proof}
 \end{tcolorbox}
 
+We now want to relate the Kraus representation to the isometric picture. Recall that an isometry is a map
+\begin{align}
+    V: \mathcal{H}_1 \rightarrow \mathcal{H}_2 : \braket{\psi|\varphi} = \braket{\psi|V^{\dagger}V|\varphi} \quad \forall \ket{\psi}, \ket{\varphi} \in \mathcal{H}_1
+\end{align}
+where $\text{dim} \mathcal{H}_2 \geq \mathcal{H}_1$. Note that if the dimensions are equal, $V$ is unitary. We often consider a $\mathcal{H}_2 = \mathcal{H}_B \otimes \mathcal{H}_E$. 
 
+\begin{proposition}
+\begin{enumerate}
+    \item $T: B(\mathcal{H}_1)\rightarrow B(\mathcal{H}_2)$  is CP iff $\exists$ $V: \mathcal{H}_1 \rightarrow \mathcal{H}_2 \otimes \mathbb{C}^r$ where $r \geq r(T)$ and $T(X) =\text{tr}_E VXV^{\dagger}$ with environment equal to $\mathbb{C}^r$.
+    \item $T$ is TP iff $V: \mathcal{H}_1\rightarrow \mathcal{H}_2 \otimes \mathbb{C}^r$ is an isometry.
+\end{enumerate}
+\end{proposition}
+
+\begin{tcolorbox}[colframe=black,breakable, colback=black!5, arc=0pt, outer arc=0pt,boxrule=0.5pt]
+\begin{proof}
+\begin{enumerate}
+    \item ($\Leftarrow$) is done. \\
+    ($\Rightarrow$) $T$ is CP: $\exists \{K_i\}_{i=1}^n$ such that $T(X) = \sum_i K_i X K_i^{\dagger}, r \geq r(T)$. Choose an orthonormal basis $\{\ket{i}\}_{i=1}^r$ in $\mathbb{C}^r: V=\sum_{i=1}^r K_i \otimes \ket{i}$. We then have 
+    \begin{align}
+        \text{tr}_E VXV^{\dagger} &= \sum_{i,j}\text{tr}_1 \left((K_i \otimes \ket{i})X(K_j \otimes \ket{j})^{\dagger}\right)
+    \end{align}
+    
+    \item $T$ is TP iff $V^{\dagger}V=\mathbb{I}$. \\
+    ($\Rightarrow$) 
+    \begin{align}
+         \text{tr}X &= \text{tr}T(X) \\
+         &= \text{tr}\left(\text{tr}_E VXV^{\dagger}\right) \\
+         &= \text{tr}(VXV^{\dagger})\\
+         &=\text{tr} X \quad \forall X \Leftrightarrow V^{\dagger}V=\mathbb{I}
+    \end{align}
+\end{enumerate}
+\end{proof}
+\end{tcolorbox}
+
+\begin{itemize}
+    \item The isometry $V$ in proposition above is called the Stinespring isometry or the Stinespring dilation of the channel $T$. 
+    \item Given Stinespring isometry $V$, a Kraus representation $\{K_i\}_i$ is obtained via $K_i=(\mathbb{I} \otimes \bra{i})V$. This is evident if we recall
+    \begin{align}
+        \text{tr}_E Y = \sum_i (\mathbb{I} \otimes \bra{i}) Y (\mathbb{I} \otimes \ket{i})
+    \end{align}
+\end{itemize}
+
+\section{Unitary picture and open system dynamics}
+For quantum channel $T: B(\mathcal{H}_1) \rightarrow B(\mathcal{H}_2)$: 
+\begin{align}
+    \exists \text{ Stinespring isometry } &V: \mathcal{H}_1 \rightarrow \mathcal{H}_2 \otimes \mathbb{C}^r \text{ such that } \\
+    T(X)&= \text{tr}_E VXV^{\dagger}
+\end{align}
+where $r=\text{dim}\mathcal{H}_1\text{dim}\mathcal{H}_2$. Complete $V$ to a unitary acting on $ \mathcal{H}_1 = \mathbb{C}^{d_1} \otimes \mathbb{C}^{d_2} \otimes \mathbb{C}^{d_2}$ such that $V=U(\mathbb{I}_{d_1} \otimes \ket{\varphi})$ where $\ket{\varphi}$ is some fixed vector in $\mathbb{C}^{d_2}\otimes \mathbb{C}^{d_2}$. What we then have is 
+\begin{align}
+    T(X) &= \text{tr}_E VXV^{\dagger} \\
+    &= \text{tr}_{E'} U(X \otimes \varphi) U^{\dagger} 
+\end{align}
+where the environment $E'$ is $\mathbb{C}^{d_1}\otimes \mathbb{C}^{d_2}$. This all allows us to consider noisy quantum evolution as unitary evolution on a larger closed system followed by a tracing out of the environment.
 
 \bibliography{references}{}
 \bibliographystyle{unsrt}
