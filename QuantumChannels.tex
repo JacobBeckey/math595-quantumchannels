@@ -1,0 +1,503 @@
+%thesis.tex 
+%Model LaTeX file for Ph.D. thesis at the 
+%School of Mathematics, University of Edinburgh
+
+\documentclass[10pt,oneside,longbibliography]{report} 
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath, bm}
+\usepackage[margin=1.25in]{geometry} 
+\usepackage{units}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{gensymb}
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\usepackage{braket}
+\usepackage{cite}
+\usepackage{wrapfig}
+\usepackage{subcaption}
+\graphicspath{ {Images/} }
+\usepackage[font={small,it}]{caption}
+\setlength{\parindent}{4em}
+\setlength{\parskip}{.5em}
+\usepackage[usenames, dvipsnames, svgnames, table]{xcolor}
+\usepackage[colorlinks=true, citecolor=ForestGreen,
+            linkcolor=ForestGreen, urlcolor=ForestGreen]{hyperref}
+\usepackage{booktabs} 
+\usepackage{colortbl} 
+\usepackage{xcolor} 
+\usepackage{xfrac}
+\usepackage{multicol}
+\usepackage[framemethod=TikZ]{mdframed}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{definition}{Definition}[section]
+%Defining fancy solution boxes
+%\newcounter{sol}[section]\setcounter{sol}{0}
+%\renewcommand{\thesol}{\arabic{section}.\arabic{sol}}
+\newenvironment{sol}[2][]{%
+%\refstepcounter{sol}%
+\ifstrempty{#1}%
+{\mdfsetup{%
+frametitle={%
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,fill=Gray!35]
+{\strut Theorem~\thetheo};}}
+}%
+{\mdfsetup{%
+frametitle={%
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,fill=Gray!35]
+{\strut ~#1};}}%
+}%
+\mdfsetup{innertopmargin=10pt,linecolor=Gray!35,%
+linewidth=2pt,topline=true,%
+frametitleaboveskip=\dimexpr-\ht\strutbox\relax
+}
+\begin{mdframed}[]\relax%
+\label{#2}}{\end{mdframed}}
+%---------------------------------------------------------%
+
+%For proofs
+\newcounter{prf}[section]\setcounter{prf}{0}
+\renewcommand{\theprf}{\arabic{section}.\arabic{prf}}
+\newenvironment{prf}[2][]{%
+\refstepcounter{prf}%
+\ifstrempty{#1}%
+{\mdfsetup{%
+frametitle={%
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,fill=Goldenrod!40]
+{\strut Proof~\theprf};}}
+}%
+{\mdfsetup{%
+frametitle={%
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,fill=Goldenrod!40]
+{\strut Proof~\thetheo:~#1};}}%
+}%
+\mdfsetup{innertopmargin=10pt,linecolor=Goldenrod!40,%
+linewidth=2pt,topline=true,%
+frametitleaboveskip=\dimexpr-\ht\strutbox\relax
+}
+\begin{mdframed}[]\relax%
+\label{#2}}{\qed\end{mdframed}}
+%----------------------------------------------------------
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\fancyhead[L]{\rightmark}
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable}
+
+\definecolor{light-gray}{gray}{0.95}
+
+\begin{document}
+
+\input{./TitlePage.tex}
+\tableofcontents
+\newpage
+
+\setcounter{chapter}{-1}
+\chapter{Prerequisites}
+\section{Hilbert Spaces and Linear Operators}
+Throughout this course, $\mathcal{H}$ denotes a finite-dimensional Hilbert space (complex vector space with an associated inner product). Using Dirac's ``bra-ket'' notation we denote elements of the Hilbert space (called kets) as
+\begin{align}
+    \ket{\psi}\in \mathcal{H}.
+\end{align}
+The elements of the dual Hilbert space are called bras and are denoted
+\begin{align}
+    \bra{\psi}\in \mathcal{H}^*,
+\end{align}
+where $\bra{\psi}=(\ket{\psi})^{\dagger}$. Here, $X^{\dagger}:=\bar{X}^{T}$ denotes the Hermitian adjoint (also called the conjugate transpose). We denote
+\begin{align}
+    B(\mathcal{H}_1,\mathcal{H}_2) := \{\text{linear maps from $\mathcal{H}_1$ to $\mathcal{H}_2$}\}
+\end{align} 
+and the set of all linear maps to and from the same space will be denoted $B(\mathcal{H})=B(\mathcal{H},\mathcal{H})$. An operator $X \in B(\mathcal{H})$ is \textit{normal} if $XX^{T}=X^{T}X$. Every normal operator has a \textit{spectral decomposition}. That is, there exists a unitary $U$ and a diagonal matrix $D$ whose entries are the eigenvalues $\lambda_1,\dots,\lambda_d \in \mathbb{C}$ of $X$ such that 
+\begin{align}
+    X=UDU^{\dagger}.
+\end{align}
+In other words, 
+\begin{align}
+    X=\sum_{i=1}^d\lambda_i \ket{\psi_i} \bra{\psi_i}
+\end{align}
+where $X\ket{\psi_i}=\lambda_i \ket{\psi_i}$ and $U=(\ket{\psi_i},\dots,\ket{\psi_d})$. If $X$ is Hermitian, $X=X^{\dagger}$, then $\lambda_i \in \mathbb{R}$. An operator $X$ is positive semi-definite (PSD) if \begin{align}
+    \bra{\varphi} X \ket{\varphi} \geq 0 \quad \quad \forall \ket{\varphi} \in \mathcal{H}.
+\end{align}
+As a consequence, $X \geq 0$ and $\lambda_i \geq 0$.
+It holds that $\text{PSD} \implies \text{ Hermitian} \implies \text{ normal}$. Unless otherwise stated, we will always assume we are working in an orthonormal basis.
+\section{Quantum States}
+A quantum state $\rho$ in a Hilbert space $\mathcal{H}$ is a PSD linear operator with
+\begin{align}
+    \rho \in B(\mathcal{H}), \quad \rho \geq 0, \quad \text{tr}\rho =1.
+\end{align}
+This means that the state has eigenvalues $\{\lambda_i\}_{i=1}^d$ satisfying $\lambda_i\geq 0$ and $\sum_{i=1}^d \lambda_i =1$. Thus, $\{\lambda_i\}_{i=1}^d$ forms a probability distribution. 
+
+A \textit{pure quantum state} $\psi$ is a quantum state with rank 1. We can find $\ket{\psi}\in \mathcal{H}$ such that $\psi =\ket{\psi}\bra{\psi}$. In this case, $\psi$ is called a \textit{projector}. A \textit{mixed state} is a quantum state with rank $>1$. Mixed states are convex combinations of pure states. That is, for every quantum state $\rho$ with $r=\text{rank}(\rho)$ there are pure states $\ket{\psi_i}_{i=1}^k \quad (k\geq r)$ and a probability distribution $\{p_i\}_{i=1}^k$ such that 
+\begin{align}
+    \rho=\sum_{i=1}^k p_i \ket{\psi_i}\bra{\psi_i}.
+\end{align}
+The spectral decomposition of $\rho$ is a special case of this property. 
+\section{Composite systems, partial trace, entanglement}
+Let $A$ and $B$ be two quantum systems with Hilbert spaces $\mathcal{H}_A$ and $\mathcal{H}_B$. The \textit{joint system} $AB$ is described by the Hilbert space $\mathcal{H}_{AB}:=\mathcal{H}_A \otimes \mathcal{H}_B$. We denote quantum states of the joint system as $\rho_{AB}\in \mathcal{H}_{AB}$. The marginal of the bipartite state, denoted $\rho_A$, is uniquely defined as the operator satisfying
+\begin{align}
+    \rho_{A}:=\text{tr}_B\rho_{AB}, 
+\end{align}
+which is defined via $\text{tr}(\rho_{AB}(X_{A}\otimes \mathbb{I}_B))=\text{tr}\rho_A X_A \quad \forall X_A \in B(\mathcal{H}_A)$. For a Hilbert space with $|B|:=\text{dim}\mathcal{H}_B$, the explicit form of the partial trace is
+\begin{align}
+    \text{tr}_B \rho_{AB}=\sum_{i=1}^{|B|}(\mathbb{I}_A \otimes \bra{i}_B)\rho_{AB} (\mathbb{I}_A\otimes \ket{i}_B),
+\end{align}
+for some basis $\{\ket{i}_B\}_{i=1}^{|B|}$ of $\mathcal{H}_B$. 
+
+A \textit{product state} on $AB$ is a state of the form $\rho_A \otimes \sigma_B$. The state is called \textit{separable} if it lies in the convex hull of product states: 
+\begin{align}
+    \rho_{AB} = \sum_{i} p_i \rho_A^i \otimes \sigma_B^i
+\end{align}
+for some states $\{\rho_A^i\}_i$ and $\{\sigma_B^i\}_i$ and  probability distribution $\{p_i\}_i$. A state is called \textit{entangled}, if it is not separable. An entangled state of particular interest is the \textit{maximally entangled state}. Let $d=\text{dim}\mathcal{H}$, $\{\ket{i}\}_{i=1}^d$ be a basis for $\mathcal{H}$. A maximally entangled state is expressed as
+\begin{align}
+    \ket{\phi^+} = \frac{1}{\sqrt{d}} \sum_{i=1}^d \ket{i}\otimes \ket{i} \quad \in \mathcal{H}\otimes \mathcal{H}
+\end{align}
+\section{Measurements}
+The most general measurement is given by a \textit{positive operator-valued measure} (POVM) $E=\{E_i\}_i$ where $E_i \geq 0 \quad \forall i$ and $\sum_i E_i = \mathbb{I}$. Then, for a quantum system $\mathcal{H}$ in state $\rho$, the probability of obtaining measurement outcome $i$ is given by $p_i = \text{tr}[\rho E_i]$. So, we have 
+\begin{align}
+    \sum_i p_i = \sum_i \text{tr}[\rho E_i] = \text{tr}\left[\rho \sum_i E_ i\right] = \text{tr}[\rho \mathbb{I}] = \text{tr}\rho = 1,
+\end{align}
+for all normalized quantum states. A \textit{projective measurement} $\Pi =\{\Pi_i \}$ is a POVM with the added property of orthogonality, which for projectors means
+\begin{align}
+    \Pi_i \Pi_j =\delta_{ij} \Pi_i.
+\end{align}
+Any basis $\{\ket{e_i}\}^{\text{dim}\mathcal{H}}_{i=1}$ gives rise to a projective measurement $\Pi=\{\ket{e_i}\bra{e_i}\}_{i=1}^{\text{dim}\mathcal{H}}$.
+\section{Entropies}
+The \textit{Shannon entropy} $H(p)$ of a probability distribution $p=\{p_i, \dots, p_d\}$ is defined as $H(p)=-\sum_{i=1}^{d}p_i \log{p_i}$, where the logarithm is base 2 unless otherwise specified. Note that when the logarithm is base 2, the entropy has units of \textit{bits}. The \textit{von Neumann entropy} $S(\rho)$ of a quantum state $\rho$ is defined as 
+\begin{align}
+    S(\rho) = -\text{tr}\left[\rho \log \rho\right] = H(\{\lambda_i, \dots, \lambda_d\}),
+\end{align}
+where $\rho=\sum_i \lambda_i \ket{\psi_i}\bra{\psi_i}$ is a spectral decomposition of $\rho$ and where the logarithm of an operator is obtained by first diagonalizing the matrix representing the operator and then taking the logarithm of the diagonal elements. That is,
+\begin{align}
+    \log{\rho} = \sum_{i:\lambda_i >0} \log{(\lambda_i)} \ket{\psi_i}\bra{\psi_i}.
+\end{align}
+
+\chapter{Representations}
+\section{Unitary evolution of (closed) quantum systems}
+\subsection{Quantum mechanics}
+We start by stating some broadly-accepted facts or axioms about quantum mechanics.
+\begin{itemize}
+    \item we represent quantum systems using (in our case) finite dimensional Hilbert spaces, denoted $\mathcal{H}$
+    \item Observables: measurable quantities are Hermitian operators $A\in B(\mathcal{H})$, $A=A^{\dagger}$, $A=\sum_i a_i \ket{a_i}\bra{a_i}$ where $\braket{a_i|a_j}=\delta_{ij}$ and $a_i \in \mathbb{R}$.
+    \item eigenvalues $a_i \in \mathbb{R}$ are the possible measurement outcomes of the observable $A$.
+    \item quantum states on $\mathcal{H}$: $\rho \in B(\mathcal{H}), \rho \geq 0, \text{tr}\rho =1, \equiv \sum_i \lambda_i =1, \rho=\sum_i \lambda_i \ket{\psi_i}\bra{\psi_i}, \rho\ket{\psi_i}=\lambda_i \ket{\psi_i}$
+    \item pure quantum states have rank 1: i.e. $\exists \ket{\psi}\in \mathcal{H}$ s.t. $\rho = \ket{\psi}\bra{\psi}$
+    \item given a state $\rho$ and an observable $A$ on the Hilbert space, $\mathcal{H}$, the probability of a specific outcome is given by $p_i = \text{tr}(\rho \ket{a_i}\bra{a_i})=\braket{a_i|\rho |a_i}$
+    \item expected outcomes of measurement: $\braket{A}_{\rho}=\sum_i p_i a_i =\text{tr}(\rho A)$
+\end{itemize}
+
+\subsection{Evolution of quantum systems}
+
+There are essentially three \textit{pictures} of quantum evolution:
+\begin{enumerate}
+    \item Evolving states (Schrodinger picture)
+    \item Evolving observables (Heisenberg picture)
+    \item Evolving both (interaction picture)
+\end{enumerate}
+We primarily focus on the Schrodinger picture in this course. Now, what do we require of a formalism that describes quantum evolution? 
+\begin{enumerate}
+    \item Evolution operation must be linear
+    \item Transformation $T: B(\mathcal{H})\rightarrow B(\mathcal{H})$ should preserve the structure of the Hilbert space. Mathematically, this means
+    \begin{align}
+        \text{tr}(\psi \phi) = \text{tr}(T(\psi)T(\phi)) \quad \forall \psi,\phi \in B(\mathcal{H})
+    \end{align}
+\end{enumerate}
+
+\begin{theorem}
+Wigner's Theorem: The above requirements imply that $T(X)$ must be either unitary or anti-unitary. That is,
+\begin{align}
+    T(X) = UXU^{\dagger} \quad \text{ or } \quad U X^T U^{\dagger} 
+\end{align}
+for some unitary $U$. 
+\end{theorem}
+
+\section{Open systems and noisy evolution}
+Because interaction with the environment (some external, inaccessible system) is unavoidable, the closed system assumption is not realistic. Even if the environment is inaccessible, for all cases we are interested in we can first write a new system as the system we are interested in plus the environment we cannot access. That is, SE= system + environment and 
+\begin{align}
+X_{SE} \mapsto U X_{SE} U^{\dagger}, \quad \text{ where } U\in \mathcal{U}(\mathcal{H}_S\otimes \mathcal{H}_E).
+\end{align}
+Note that $\mathcal{U}$ denotes the unitary group. We can then trace out the environment to recover the evolved system of interest via
+\begin{align}
+    X_S = \text{Tr}_E (U X_{SE} U^{\dagger})
+\end{align}
+This partial trace over the environment corresponds to a \textit{noisy and irreversible} evolution of $S$. Recall that we are focusing on the Schrodinger picture of quantum mechanics. This means we evolve quantum states with maps $T:B(\mathcal{H}_1) \rightarrow \mathcal{H}_2$. Maps that evolve quantum states must satifsy the following requirements. 
+\begin{enumerate}
+    \item Linearity
+    \item Map states to states
+    \begin{enumerate}
+        \item $T$ should preserve trace: $\text{tr}(T(X))=\text{tr}X$
+        \item ($X\geq 0 \implies T(X) \geq 0$) $\Leftrightarrow T \geq 0$ (short-hand notation)
+        \item Complete positivity: $T\otimes \mathbb{I}_n \geq 0, \quad \forall n\in \mathbb{N}$
+    \end{enumerate}
+\end{enumerate}
+These requirements lead us to our first definition. 
+\begin{definition}
+A quantum channel is a linear, completely positive (CP), trace-preserving (TP) map $T: B(\mathcal{H}_1)\rightarrow B(\mathcal{H}_2)$.
+\end{definition}
+
+Given a map $T: B(\mathcal{H}_1)\rightarrow B(\mathcal{H}_2)$, the \textit{adjoint map} is $T^{\dagger}:B(\mathcal{H}_2)\rightarrow B(\mathcal{H}_1)$ defined via
+\begin{align}
+    \langle T^{\dagger}(X),Y \rangle = \langle X, T(Y) \rangle 
+\end{align}
+for all $X\in B(\mathcal{H}_2)$ and $Y\in B(\mathcal{H}_1)$. Our map, $T: B(\mathcal{H}_1)\rightarrow B(\mathcal{H}_2)$ is: 
+
+\begin{itemize}
+    \item CP iff $T^{\dagger}$ is CP.
+    \item TP iff $T^{\dagger}$ is unital: $T^{\dagger}(\mathbb{I}_2)=\mathbb{I}_1$.
+    \begin{align}
+        \langle T^{\dagger}(\mathbb{I}_2),Y \rangle &= \langle \mathbb{I}_2,T(Y)\rangle = \text{tr}(T(Y))=\text{tr}Y = \langle \mathbb{I}_1, Y\rangle \quad \forall \quad Y \in B(\mathcal{H}_1)
+    \end{align}
+\end{itemize}
+This chain of equalities implies that $T^{\dagger}(\mathbb{I}_2)=\mathbb{I}_1$. Note that unital quantum channels are both TP and unital.
+
+\section{
+Choi–Jamiołkowski isomorphism}
+We now turn to a very useful tool for studying quantum channels. 
+\begin{definition}
+Let $T:B(\mathcal{H}_1)\rightarrow B(\mathcal{H}_2)$ be a linear map. The Choi operator $\tau \in B(\mathcal{H}_1 \otimes \mathcal{H}_2)$ is defined as 
+\begin{align}
+    \tau := (\mathbb{I}_1\otimes T)(\gamma) 
+\end{align}
+where $\gamma := \ket{\gamma}\bra{\gamma}$ and $\ket{\gamma}=\sum_{i=1}^{\text{dim}\mathcal{H}_1} \ket{i}\otimes \ket{i} \in \mathcal{H}_1 \otimes \mathcal{H}_1 $. Note that $\{\ket{i}\}_{i=1}^{\text{dim}\mathcal{H}_1}$ is an orthonormal basis for $\mathcal{H}_1$. 
+\end{definition}
+The explicit form of this operator is then
+\begin{align}
+    \tau = \sum_{i,j} \ket{i}\bra{j} \otimes T(\ket{i}\bra{j})
+\end{align}
+
+\begin{tcolorbox}[colframe=black,breakable, colback=brown!8, arc=0pt, outer arc=0pt,boxrule=0.5pt]
+\textbf{Example.} If $\mathcal{H}_1 = \mathcal{H}_2=\mathbb{C}^2$, the we can express the Choi operator with the block matrix given by
+\begin{align}
+    \tau = \begin{pmatrix}
+    T(\ket{0}\bra{0}) & T(\ket{1}\bra{0})\\
+    T(\ket{0}\bra{1}) & T(\ket{1}\bra{1})
+    \end{pmatrix}
+\end{align}
+where the elements of this matrix are themselves operators $T(\ket{i}\bra{j})$.
+\end{tcolorbox}
+\begin{proposition}
+Let $T: B(\mathcal{H}_1)\rightarrow B(\mathcal{H}_2)$. The map $T \mapsto \tau = (\mathbb{I}_1 \otimes T)(\gamma)$ is a bijection between $\{T: B(\mathcal{H}_1)\rightarrow B(\mathcal{H}_2)\}$ and $B(\mathcal{H}_1 \otimes \mathcal{H}_2)$, with the inverse mapping $\tau \mapsto T(X):=\text{tr}_1(\tau(X^{T}\otimes \mathbb{I})))$.
+\end{proposition}
+
+\begin{tcolorbox}[colframe=black,breakable, colback=black!5, arc=0pt, outer arc=0pt,boxrule=0.5pt]
+\begin{proof}
+Let $\tau = (\mathbb{I}\otimes T)(\gamma)$, where as usual $\gamma=\ket{\gamma}\bra{\gamma}$. Tracing over the first system, we have \begin{align}
+    \text{tr}_1(\tau(X^{T}\otimes \mathbb{I})) &= \text{tr}_1\left((\sum_{i,j}\ket{i}\bra{j}\otimes T(\ket{i}\bra{j})(X^{T}\otimes \mathbb{I}))\right)\\
+    &= \sum_{i,j} \text{tr}(\ket{i}\bra{j}X^T) T(\ket{i}\bra{j})\\
+    &=\sum_{i,j} \left(\sum_{i}\bra{i}(\ket{i}\bra{j}X^T)\ket{i} T(\ket{i}\bra{j})\right)\\
+    &=\sum_{i,j} \bra{j}X^T\ket{i} T(\ket{i}\bra{j})\\
+    &=\sum_{i,j} x_{ij} T(\ket{i}\bra{j}), \quad\bra{j}X^T\ket{i}=\bra{i}X\ket{j}:=x_{ji}\\
+    &= T(\sum_{i,j} x_{ij}\ket{i}\bra{j}), \quad \text{ linearity of } T\\
+    &= T(X)
+\end{align}
+It remains to be shown that $T\mapsto (\mathbb{I} \otimes T)(\gamma)$ is surjective. We note that there exists $\ket{\psi_i},\ket{\phi_i}$ such that $\tau = \sum_i \ket{\psi_i}\bra{\phi_i} \in B(\mathcal{H}_1 \otimes \mathcal{H}_2)$ where $\ket{\psi_i} \neq \ket{\phi_i}$.
+
+\vspace{1cm}
+\noindent \textbf{Claim:} For every vector $\ket{\psi}\in B(\mathcal{H}_1 \otimes \mathcal{H}_2) \exists V\in B(\mathcal{H}_1,\mathcal{H}_2)$ such that 
+\begin{align}
+    \ket{\psi} =(\mathbb{I}_1 \otimes V)\ket{\gamma}.
+\end{align}
+
+To see this, let $\ket{\psi}=\sum_{i,j}p_{ij} \ket{i}\otimes \ket{e_j}$ where $\{\ket{i}\}$ is $\gamma$'s basis and $\{e_j\}$ is an arbitrary basis. Then we can construct $V$ as
+\begin{align}
+    V=\sum_{i,j} p_{ij} \ket{e_j}\bra{i}.
+\end{align}
+
+Recall $\tau = \sum_i \ket{\psi_i}\bra{\phi_i} \in B(\mathcal{H}_1 \otimes \mathcal{H}_2)$. We next claim that there exists $L_i, K_i$ such that 
+\begin{align}
+    \ket{\psi_i}&=(\mathbb{I}\otimes K_i)\ket{\gamma},\\
+    \ket{\phi_i}&=(\mathbb{I}\otimes L_i)\ket{\gamma}.\\
+\end{align}
+This implies
+\begin{align}
+    \tau &= \sum_i \ket{\psi_i}\bra{\phi_i} \\
+    &=\sum_i (\mathbb{I}\otimes K_i) \ket{\gamma}\bra{\gamma}(\mathbb{I}\otimes L_i)^{\dagger} \\
+    &= (\mathbb{I} \otimes T)(\gamma),
+\end{align}
+where we have identified 
+\begin{align}
+    T(X)=\sum_i K_i X L_i
+\end{align}
+as the linear map we sought. This completes the proof of the proposition. 
+\end{proof}
+\end{tcolorbox}
+
+\subsection{Recap}
+\begin{itemize}
+    \item Quantum systems are modeled by Hilbert spaces
+    \item Quantum state: $\rho \in B(\mathcal{H}), \rho \geq 0, \text{tr}\rho =1$. The state has an eigendecomposition given by
+    \begin{align}
+        \rho=\sum_i \lambda_i \ket{\psi_i}\bra{\psi_i}, \quad \text{ where } \rho \ket{\psi_i}=\lambda_i \ket{\psi_i}, \lambda_i \geq 0, \braket{\psi_i|\psi_j}=\delta_{ij}
+    \end{align}
+    \item Schrodinger picture: evolution of quantum states
+    \item Closed systems: evolution given by unitary maps (Wigner's theorem)
+    \item Open systems: unitary evolution on system + environment. This induces noisy evolution on the system
+    \item Quantum channel: $T:B(\mathcal{H}_1)\rightarrow B(\mathcal{H}_2)$
+    \begin{itemize}
+        \item linear
+        \item trace-preserving (TP): $\text{tr}(X(T)) =\text{tr}X \quad \forall X\in B(\mathcal{H}_1)$
+        \item completely positive (CP): $T \otimes \mathbb{I} \geq 0 \quad \forall n\in \mathbb{N}$
+    \end{itemize}
+    \item Choi operator: $\tau \in B(\mathcal{H}_1\otimes \mathcal{H}_2)$, $\tau:=(\mathbb{I}\otimes T)(\gamma)$ where $\ket{\gamma} = \sum_i \ket{i} \otimes \ket{i}\in \mathcal{H}_1 \otimes \mathcal{H}_1$
+    \item Choi–Jamiołkowski isomorphism: $T \mapsto \tau=(\mathbb{I}\otimes T)(\gamma)$ is a bijection $\{T:B(\mathcal{H}_1)\rightarrow B(\mathcal{H}_2) \text{ linear}\} \Leftrightarrow B(\mathcal{H}_1 \otimes \mathcal{H}_2)$ with inverse mapping given by \begin{align}
+        \tau \mapsto \left[T: X \mapsto \text{tr}_1(\tau(X^T \otimes \mathbb{I}))\right].
+    \end{align} 
+    \item Steering inequality: $\forall \ket{\psi} \in \mathcal{H}_1 \otimes \mathcal{H}_2 \quad \exists \quad K \in B(\mathcal{H}_1, \mathcal{H}_2)$ such that 
+    \begin{align}
+        \ket{\psi} = (\mathbb{I} \otimes K) \ket{\gamma}
+    \end{align}
+\end{itemize}
+
+\begin{proposition}
+Let $T$ be a linear map that acts as $T: B(\mathcal{H}_1)\rightarrow B(\mathcal{H}_2)$. Let $\tau$ denote the associated Choi operator that is defined as $\tau =(\mathbb{I} \otimes T)(\gamma)$, with $\ket{\gamma} = \sum_i \ket{i}\otimes \ket{i}$. Then the following hold:
+\begin{enumerate}
+    \item $T(X)^{\dagger}=T(X^{\dagger})$ iff $\tau=\tau^{\dagger}$.
+    \item $T$ is CP iff $\tau \geq 0$.
+    \item $T$ is TP iff $\text{tr}_2 \tau=\mathbb{I}_1$.
+    \item $T$ is unital iff $\text{tr}_1 \tau = \mathbb{I}_2$.
+\end{enumerate}
+Recall an operator $S$ is unital if $S(\mathbb{I}_1)=\mathbb{I}_2$.
+\end{proposition}
+
+\begin{tcolorbox}[colframe=black,breakable, colback=black!5, arc=0pt, outer arc=0pt,boxrule=0.5pt]
+\begin{proof}
+\begin{enumerate}
+    \item ($\Rightarrow$) First we prove if $T(X)^{\dagger}=T(X^{\dagger})$, then $\tau=\tau^{\dagger}$.
+    
+    \begin{align}
+        \tau^{\dagger} &= \left(\sum_{i,j}\ket{i}\bra{j} \otimes T(\ket{i}\bra{j})\right)^{\dagger}\\
+        &= \sum_{i,j}\ket{j}\bra{i} \otimes T(\ket{i}\bra{j})^{\dagger}\\
+        &= \sum_{i,j}\ket{j}\bra{i} \otimes T(\ket{i}\bra{j}^{\dagger})\\
+        &=\sum_{i,j}\ket{j}\bra{i} \otimes T(\ket{j}\bra{i})\\
+        &= \tau
+    \end{align}
+    ($\Leftarrow$) The other way, if $\tau = \tau^{\dagger}$, $T(X)^{\dagger}=T(X^{\dagger})$.
+    We know that $\tau = \sum_{i,j} \ket{i}\bra{j} \otimes T(\ket{i}\bra{j})$ so $\tau=\tau^{\dagger}$ allows us to write
+    \begin{align}
+        \left(\sum_{ij} \ket{i}\bra{j} \otimes T(\ket{i}\bra{j})\right)&=\left(\sum_{ij} \ket{i}\bra{j} \otimes T(\ket{i}\bra{j})\right)^{\dagger}\\
+        &=\left(\sum_{ij} \ket{j}\bra{i} \otimes T(\ket{i}\bra{j})^{\dagger}\right)
+    \end{align}
+    This is a matrix equality, so each element must be the same. Sandwiching $\bra{j}\otimes \mathbb{I}_2 \cdot \ket{i}\otimes \mathbb{I}_2$ around both sides of the expression above yields
+    \begin{align}
+        T(\ket{i}\bra{j})^{\dagger} &= T(\ket{j}\bra{i}) \quad \forall i,j,
+    \end{align}
+    which implies
+    \begin{align}
+        T(X)^{\dagger} = T(X^{\dagger}) \quad \forall X\in B(\mathcal{H}_1),
+    \end{align}
+    because all bounded operators can be expanded in the form $X=\sum_{i,j} x_{ij} \ket{i}\bra{j}$ and because $T$ is linear. 
+    
+    \item ($\Rightarrow$) First we prove that if $T$ is CP, then $\tau\geq 0$.   $\tau = (\mathbb{I} \otimes T)(\gamma), \gamma \geq 0 \implies \tau \geq 0$.
+    
+    ($\Leftarrow$) Going the other way, we want to prove that if $\tau \geq 0$, then $T$ is CP. To do so, we need to show 
+    \begin{align}
+     (\mathbb{I}_n\otimes T)(\rho) \geq 0 \quad \forall \rho \in B(\mathbb{C}^n \otimes \mathcal{H}_2), \rho \geq 0.
+    \end{align}
+    
+    \item ($\Rightarrow$) If $T$ is TP, then $\text{tr}_2 \tau = \mathbb{I}_1$.
+    \begin{align}
+        \text{tr}_2 \tau &= \text{tr}_2\left(\sum_{i,j} \ket{i}\bra{j} \otimes T(\ket{i}\bra{j})\right)\\
+        &= \sum_{i,j} \ket{i}\bra{j}  \text{tr}(T(\ket{i}\bra{j}))\\
+        &=\sum_{i,j} \ket{i}\bra{j} T(\text{tr}(\ket{i}\bra{j}))\\
+        &=\sum_{i,j} \ket{i}\bra{j} \delta_{ij}\\
+        &=\sum_i \ket{i}\bra{i}_1 \\
+        &= \mathbb{I}_1
+    \end{align}
+    $(\Leftarrow)$ If $\text{tr}_2 \tau = \mathbb{I}_2$, then $\text{tr}T(X)=\text{tr}X$.
+    \begin{align}
+        \text{tr}T(X) &= \text{tr}\left[\text{tr}_1 (\tau(X^{T}\otimes \mathbb{I}))\right]\\
+        &=\text{tr}(\tau(X^T \otimes \mathbb{I})) \quad \quad \text{tr}(\text{tr}_i(\cdot))=\text{tr}(\cdot)\\
+        &= \text{tr}\left(\text{tr}_2 (\tau) X^{T} \right)\\
+        &=\text{tr}X^{T} \\
+        &=\text{tr}X
+    \end{align}
+    \item ($\Rightarrow$) $T$ is unital if $\text{tr}_1 \tau =\mathbb{I}_2$.
+    \begin{align}
+       \text{tr}_1 \tau &= \sum_{i,j} \text{tr}(\ket{i}\bra{j}_1)T(\ket{i}\bra{j}_1) \\
+        &= \sum_i T(\ket{i}\bra{i}_1)\\
+        &= T(\mathbb{I}_1)\\
+        &= \mathbb{I}_2
+    \end{align}
+    $(\Leftarrow)$ If $\text{tr}_1 \tau =\mathbb{I}_2$, then $T$ is unital.
+    \begin{align}
+     T(\mathbb{I}_1)&=\text{tr}_1\left(\tau(\mathbb{I}_1^T \otimes \mathbb{I}_2)\right)\\
+     &= \text{tr}_1 \tau \\
+     &= \mathbb{I}_2
+    \end{align}
+\end{enumerate}
+\end{proof}
+\end{tcolorbox}
+
+
+
+\subsection{Examples of CP maps}
+\begin{enumerate}
+    \item unitary maps are CP: $(\mathbb{I}\otimes U) \ket{\gamma} \bra{\gamma} (\mathbb{I}\otimes U)^{\dagger} \geq 0$
+    \item isometries are CP: $V:\mathcal{H}_1 \rightarrow \mathcal{H})2: V^{\dagger}V =\mathbb{I}_1 \Leftrightarrow \bra{\varphi} V^{\dagger}V \ket{\psi} = \braket{\varphi|\psi} \quad \forall \varphi,\psi$, and where $\text{dim}\mathcal{H}_1 \leq \text{dim}\mathcal{H}_2$.
+    \item trace: $(\mathbb{I}_1 \otimes \text{tr})(\gamma) = \sum_{i,j} \ket{i}\bra{j} \text{tr}(\ket{i}\bra{j}) = \mathbb{I}_1 \geq 0 $. Note that this also implies that the patial trace, $\text{tr}_2: B(\mathcal{H}_1 \otimes \mathcal{H}_2) \rightarrow B(\mathcal{H}_1)$ is CPTP. We will later show that all channels can be expressed as unitary evolution on system + environment followed by a partial trace over the environment. 
+    \item $X \mapsto \sum_i K_i X K_i^{\dagger}$ are CP (more on this later).
+\end{enumerate}
+We have seen examples of CP maps. What about a map that is not CP? The transposition map, $V:X\mapsto X^{T}$ with respect to a fixed basis, is positive but not \textit{completely positive}. 
+
+Consider the following operator:
+\begin{align}
+    \mathbb{F}&=(\mathbb{I}\otimes V)(\gamma)\\
+    &= \sum_{i,j}\ket{i}\bra{j} \otimes V(\ket{i}\bra{j})\\
+    &= \sum_{i,j} \ket{i}\bra{j} \otimes \ket{j}\bra{i}.
+\end{align}
+We call this the swap operator because $\ket{\psi_i},\ket{\psi_2}\in \mathcal{H}_1: \mathbb{F}(\ket{\psi_1}\otimes \ket{\psi_2})=\ket{\psi_1}\otimes \ket{\psi_1}$. 
+
+\section{Kraus representation and the isometric picture}
+We saw before that $X\mapsto \sum_i K_i X K_i^{\dagger}$ are CP. The converse is also true. 
+
+\begin{proposition}
+\begin{enumerate}
+    \item A map $T:B(\mathcal{H}_1)\rightarrow B(\mathcal{H}_2)$ is CP iff $\exists \{K_i\}_i$ with $K_i \in B(\mathcal{H}_1,\mathcal{H}_2)$ such that $T(X) = \sum_i K_i X K_i^{\dagger}$. We call the $K_i$'s the Kraus operators of T. 
+    \item The Kraus rank $r(T)$ is defined as the minimal number of Kraus operators is equal to the rank of the Choi operator, $\tau = (\mathbb{I}\otimes T)(\gamma)$. It is always true that 
+    \begin{align}
+        r(T) \leq \text{dim}\mathcal{H}_1\cdot\text{dim}\mathcal{H}_2
+    \end{align}
+    \item There exists a Kraus representation with $r=\text{rank}\tau$ operators such that $\langle K_i,K_j\rangle=\text{tr}(K_i^{\dagger} K_j) = c_i \delta_{i,j}$ for some constant $c_i$ that results from using an unnormalized $\gamma$ state. 
+    \item $T$ is TP iff $\sum_i K_i^{\dagger}K_i = \mathbb{I}_1$, $T$ is unital iff $\sum_i K_i K_i^{\dagger} = \mathbb{I}_2$
+    \item Any two Kraus representations $\ket{K_i}_i$ and $\{L_i\}_i$ of a channel $T$ are related by a unitary $U$ via 
+    \begin{align}
+        K_i = \sum_{i,j} U_{ij}L_j.
+    \end{align}
+    This means that $T(X)=\sum_i K_i X K_i^{\dagger} = \sum_j L_j X L_j^{\dagger}$.
+\end{enumerate}
+\end{proposition}
+
+\begin{tcolorbox}[colframe=black,breakable, colback=black!5, arc=0pt, outer arc=0pt,boxrule=0.5pt]
+\begin{proof}
+\begin{enumerate}
+    \item $\leftarrow$ is obvious. Going the other way, we know $T$ is CP $\Leftrightarrow$ $\tau \geq 0$, by prop 4. 
+    \begin{align}
+        \tau &=\sum_i \lambda_i \ket{\psi_i}\bra{\psi_i} \\
+        &= \sum_i \ket{\varphi_i}\bra{\varphi_i}, \quad \text{ where } \ket{varphi_i}=\sqrt{\lambda_i} \ket{\psi_i}\\
+        &= \sum_i (\mathbb{I}\otimes K_i \ket{\gamma}\bra{\gamma} (\mathbb{I}\otimes K_i^{\dagger}))\\
+        &=(\mathbb{I}\otimes T)(\gamma) \quad \text{ with } T= \sum_i K_i \cdot K_i^{\dagger}
+    \end{align}
+    \item Clear from proof of 1.): $r=\text{rank}(\tau) \implies$ at least $r$ pure states in the decomposition of $\tau$. This implies that there are at least $r$ Kraus operators. 
+\end{enumerate}
+\end{proof}
+\end{tcolorbox}
+
+
+
+\bibliography{references}{}
+\bibliographystyle{unsrt}
+
+\end{document}
+

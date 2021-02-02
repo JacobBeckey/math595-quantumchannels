@@ -1,0 +1,37 @@
+# LaTeX temporary files
+*.aux
+*.log
+*.toc
+*.brf
+*.fls
+
+# PDF output - usually a bad idea to keep this in Git
+# *.pdf
+*.dvi
+
+# Latexmk
+*.fdb_latexmk
+
+# SyncTeX
+*.synctex.gz
+*.synctex
+
+# LaTeX Beamer
+*.snm
+*.vrb
+*.nav
+*.out
+
+# BibTeX
+*.bbl
+*.blg
+
+# Sublime Text Project Files (usually contain absolute paths)
+*.sublime-project
+*.sublime-workspace
+
+# Vim files
+*.swp
+
+# Other
+*.synctex(busy)
