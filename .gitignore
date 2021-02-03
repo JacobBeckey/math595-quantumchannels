@@ -35,3 +35,4 @@
 
 # Other
 *.synctex(busy)
+*.DS_Store
