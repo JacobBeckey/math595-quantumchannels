@@ -465,13 +465,13 @@ We saw before that $X\mapsto \sum_i K_i X K_i^{\dagger}$ are CP. The converse is
 \begin{proposition}
 \begin{enumerate}
     \item A map $T:B(\mathcal{H}_1)\rightarrow B(\mathcal{H}_2)$ is CP iff $\exists \{K_i\}_i$ with $K_i \in B(\mathcal{H}_1,\mathcal{H}_2)$ such that $T(X) = \sum_i K_i X K_i^{\dagger}$. We call the $K_i$'s the Kraus operators of T. 
-    \item The Kraus rank $r(T)$ is defined as the minimal number of Kraus operators is equal to the rank of the Choi operator, $\tau = (\mathbb{I}\otimes T)(\gamma)$. It is always true that 
+    \item The Kraus rank, $r(T)$, the minimal number of Kraus operators needed to represent $T$, is equal to the rank of the Choi operator, $\tau = (\mathbb{I}\otimes T)(\gamma)$. It is always true that 
     \begin{align}
         r(T) \leq \text{dim}\mathcal{H}_1\cdot\text{dim}\mathcal{H}_2
     \end{align}
     \item There exists a Kraus representation with $r=\text{rank}(\tau)$ operators such that $\langle K_i,K_j\rangle=\text{tr}(K_i^{\dagger} K_j) = c_i \delta_{i,j}$ for some constant $c_i$ that results from using an unnormalized $\gamma$ state. 
     \item $T$ is TP iff $\sum_i K_i^{\dagger}K_i = \mathbb{I}_1$, $T$ is unital iff $\sum_i K_i K_i^{\dagger} = \mathbb{I}_2$
-    \item Any two Kraus representations $\ket{K_i}_i$ and $\{L_i\}_i$ of a channel $T$ are related by a unitary $U$ via 
+    \item Any two Kraus representations $\{K_i\}_i$ and $\{L_i\}_i$ of a channel $T$ are related by a unitary $U$ via 
     \begin{align}
         K_i = \sum_{i,j} U_{ij}L_j.
     \end{align}
@@ -482,47 +482,62 @@ We saw before that $X\mapsto \sum_i K_i X K_i^{\dagger}$ are CP. The converse is
 \begin{tcolorbox}[colframe=black,breakable, colback=black!5, arc=0pt, outer arc=0pt,boxrule=0.5pt]
 \begin{proof}
 \begin{enumerate}
-    \item $\leftarrow$ is obvious. Going the other way, we know $T$ is CP $\Leftrightarrow$ $\tau \geq 0$, by prop 4. 
-    \begin{align}
-        \tau &=\sum_i \lambda_i \ket{\psi_i}\bra{\psi_i} \\
-        &= \sum_i \ket{\varphi_i}\bra{\varphi_i}, \quad \text{ where } \ket{\varphi_i}=\sqrt{\lambda_i} \ket{\psi_i}\\
-        &= \sum_i (\mathbb{I}\otimes K_i \ket{\gamma}\bra{\gamma} (\mathbb{I}\otimes K_i^{\dagger}))\\
-        &=(\mathbb{I}\otimes T)(\gamma) \quad \text{ with } T= \sum_i K_i \cdot K_i^{\dagger}
-    \end{align}
+    \item A map $T:B(\mathcal{H}_1)\rightarrow B(\mathcal{H}_2)$ is CP iff $\exists \{K_i\}_i$ with $K_i \in B(\mathcal{H}_1,\mathcal{H}_2)$ such that $T(X) = \sum_i K_i X K_i^{\dagger}$. We call the $K_i$'s the Kraus operators of T.\\
     
-    We know $X=\sum_i \ket{\psi_i}\bra{\psi_i}$ for some $\{\ket{\psi_i}\}_i$. Then $X\geq 0 \Leftrightarrow$ $\braket{\varphi|X|\varphi} \geq 0 \quad \forall \ket{\varphi}$. This implies 
+    ($\leftarrow$) is obvious. \textbf{Why?}\\
+    
+    ($\Rightarrow$) Going the other way, we know $T$ is CP $\Leftrightarrow$ $\tau \geq 0$, by Prop 4. 
+    
+    \textbf{Claim:} $X\geq 0 \Leftrightarrow$ $\exists \{\ket{\psi_i}\}_{i=1}^r$ with $r \geq \text{rank} X$ such that $X=\sum_i \ket{\psi_i}\bra{\psi_i}$ with $\braket{\psi_i | \psi_j} \neq \delta_{ij}$ in general. 
+    \begin{proof}
+    ($\Leftarrow$) $X = \sum_i \ket{\psi_i}\bra{\psi_i}$ for some $\{\ket{\psi_i}\}_i$. \\
+    
+    We know, $X \geq 0 \Leftrightarrow \braket{\varphi|X|\varphi} \geq 0 \quad \forall \ket{\varphi}$. This allows us to write
     \begin{align}
         \bra{\varphi}\left(\sum_i \ket{\psi_i}\bra{\psi_i}\right)\ket{\varphi} = \sum_i |\braket{\varphi|\psi_i}|^2 \geq 0
     \end{align}
     
+    ($\Rightarrow$) $X \geq 0: $ $X=\sum_i \lambda_i \ket{X_i}\bra{X_i}$ where $X\ket{X_i} = \lambda_i \ket{X_i}$ and $\braket{X_i | X_j} = \delta_{ij}$. Let $\ket{\psi_i}:= \sqrt{\lambda_i}\ket{X_i} \implies X=\sum_i \ket{\psi_i}\bra{\psi_i}$.
+    \end{proof}
+    Returning to the proof of the first item of the proposition, we have that $\tau \geq 0 \Rightarrow \exists \{\ket{\psi_i}\}$ such that $\tau = \sum_i \ket{\psi_i}\bra{\psi_i}$. Further, for all $i$ there exists $K_i$ such that $\ket{\psi_i} =(\mathbb{I}_1 \otimes K_i)\ket{\gamma}$. The we can write
+    \begin{align}
+        \tau &= \sum_i \ket{\psi_i}\bra{\psi_i} \\
+        &= \sum_i (\mathbb{I}_1 \otimes K_i) \ket{\gamma} \bra{\gamma} (\mathbb{I}_1 \otimes K_i)^{\dagger}
+    \end{align}
+    by the C-J isomorphism we conclude that $T(X) = \sum_i K_i X K_i^{\dagger}$.
+    
+    
     
     \item Clear from proof of 1.) $r=\text{rank}(\tau) \implies$ at least $r$ pure states in the decomposition of $\tau$. This implies that there are at least $r$ Kraus operators. 
-    \item There exists a Kraus representation with $r=\text{rank}(\tau)$ operators such that $\langle K_i,K_j\rangle=\text{tr}(K_i^{\dagger} K_j) = c_i \delta_{i,j}$ for some constant $c_i$ that results from using an unnormalized $\gamma$ state. 
+    \item There exists a Kraus representation with $r=\text{rank}(\tau)$ operators such that $\langle K_i,K_j\rangle=\text{tr}(K_i^{\dagger} K_j) = c_i \delta_{i,j}$ for some constant $c_i$ that results from using an unnormalized $\gamma$ state. \\
+    
+    Let $\tau = \lambda_i \ket{X_i} \bra{X_i}$ be the spectral decomposition of $\tau$ with $\ket{\varphi_i}=\sqrt{\lambda_i} \ket{X_i}$. We have
     
     \begin{align}
-        \tau &= \sum_i \ket{\varphi_i}\bra{\varphi_i} \quad \ket{\varphi_i}=\sqrt{\lambda_i} \ket{\chi_i} \\
+        \tau &= \sum_i \ket{\varphi_i}\bra{\varphi_i} \\
         &=\sum_i (\mathbb{I} \otimes L_i) \ket{\gamma}\bra{\gamma} (\mathbb{I}\otimes L_i)^{\dagger} \\
         \Rightarrow \quad  T &= \sum_{i=1}^{r(\tau)}L_i \cdot L_i^{\dagger}
     \end{align}
     We also need to show $\braket{L_i,L_j}=c \delta_{ij}$. We know
     \begin{align}
-        \ket{\varphi_i} = (\mathbb{I}_1 \otimes L_i)\ket{\gamma}
+       \ket{\varphi_i} = (\mathbb{I}_1 \otimes L_i)\ket{\gamma}
     \end{align}
     so, we can write
     \begin{align}
-        \braket{\varphi_i|\varphi_j}&= \bra{\gamma}\left(\mathbb{I}_1 \otimes L_i^{\dagger}\right)\left(\mathbb{I}\otimes L_i\right)\ket{\gamma} \\
+      c\delta_{ij} &=\braket{\varphi_i|\varphi_j}\\
+      &= \bra{\gamma}\left(\mathbb{I}_1 \otimes L_i^{\dagger}\right)\left(\mathbb{I}\otimes L_i\right)\ket{\gamma} \\
         &= \sum_{k,l} \braket{k|l} \bra{k}L_i^{\dagger} L_j \ket{l}\\
-        &= \sum_k c \bra{k} L_i^{\dagger}L_j \ket{k} \\
-        &= c\text{tr}\left(L_i^{\dagger} L_j\right)
-        &= c \delta_{ij}
+        &= \sum_k  \bra{k} L_i^{\dagger}L_j \ket{k} \\
+        &= \text{tr}\left(L_i^{\dagger} L_j\right)\\
+        &= \braket{L_i,L_j}
     \end{align}
     
     \item $T$ is TP iff $\sum_i K_i^{\dagger}K_i = \mathbb{I}_1$, $T$ is unital iff $\sum_i K_i K_i^{\dagger} = \mathbb{I}_2$.
     
     \begin{align}
         \text{tr}(T(X)) &= \sum_i \text{tr} \left(K_i X K_i^{\dagger}\right) \\
-        &= \sum_i \text{tr} \left(K_i^{\dagger} K_i X\right)\\
-        &= \text{tr}\left(\sum_i K_i^{\dagger} K_i X\right) \\
+        &= \sum_i \text{tr} \left(K_i^{\dagger} K_i X\right) \quad \text{ cyclicity of trace}\\
+        &= \text{tr}\left(\sum_i K_i^{\dagger} K_i X\right) \quad \text{ linearity of trace}\\
         &=\text{tr}X \quad \forall X\\
         \Leftrightarrow & \sum_i K_i^{\dagger}K_i = \mathbb{I}_1
     \end{align}
@@ -533,7 +548,7 @@ We saw before that $X\mapsto \sum_i K_i X K_i^{\dagger}$ are CP. The converse is
         &= \mathbb{I}_2.
     \end{align}
     
-    \item Any two Kraus representations $\ket{K_i}_i$ and $\{L_i\}_i$ of a channel $T$ are related by a unitary $U$ via 
+    \item Any two Kraus representations $\{K_i\}_i$ and $\{L_i\}_i$ of a channel $T$ are related by a unitary $U$ via 
     \begin{align}
         K_i = \sum_{i,j} U_{ij}L_j.
     \end{align}
