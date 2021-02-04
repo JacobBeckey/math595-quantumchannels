@@ -34,6 +34,9 @@
 \usepackage{xfrac}
 \usepackage{multicol}
 \usepackage[framemethod=TikZ]{mdframed}
+
+\DeclareMathOperator{\rank}{rank}
+
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}{Corollary}[section]
 \newtheorem{proposition}{Proposition}[section]
@@ -140,7 +143,7 @@ A quantum state $\rho$ in a Hilbert space $\mathcal{H}$ is a PSD linear operator
 \end{align}
 This means that the state has eigenvalues $\{\lambda_i\}_{i=1}^d$ satisfying $\lambda_i\geq 0$ and $\sum_{i=1}^d \lambda_i =1$. Thus, $\{\lambda_i\}_{i=1}^d$ forms a probability distribution. 
 
-A \textit{pure quantum state} $\psi$ is a quantum state with rank 1. We can find $\ket{\psi}\in \mathcal{H}$ such that $\psi =\ket{\psi}\bra{\psi}$. In this case, $\psi$ is called a \textit{projector}. A \textit{mixed state} is a quantum state with rank $>1$. Mixed states are convex combinations of pure states. That is, for every quantum state $\rho$ with $r=\text{rank}(\rho)$ there are pure states $\ket{\psi_i}_{i=1}^k \quad (k\geq r)$ and a probability distribution $\{p_i\}_{i=1}^k$ such that 
+A \textit{pure quantum state} $\psi$ is a quantum state with rank 1. We can find $\ket{\psi}\in \mathcal{H}$ such that $\psi =\ket{\psi}\bra{\psi}$. In this case, $\psi$ is called a \textit{projector}. A \textit{mixed state} is a quantum state with rank $>1$. Mixed states are convex combinations of pure states. That is, for every quantum state $\rho$ with $r=\rank(\rho)$ there are pure states $\ket{\psi_i}_{i=1}^k \quad (k\geq r)$ and a probability distribution $\{p_i\}_{i=1}^k$ such that 
 \begin{align}
     \rho=\sum_{i=1}^k p_i \ket{\psi_i}\bra{\psi_i}.
 \end{align}
@@ -469,7 +472,7 @@ We saw before that $X\mapsto \sum_i K_i X K_i^{\dagger}$ are CP. The converse is
     \begin{align}
         r(T) \leq \dim\mathcal{H}_1\cdot\dim\mathcal{H}_2
     \end{align}
-    \item There exists a Kraus representation with $r=\text{rank}(\tau)$ operators such that $\langle K_i,K_j\rangle=\text{tr}(K_i^{\dagger} K_j) = c_i \delta_{i,j}$ for some constant $c_i$ that results from using an unnormalized $\gamma$ state. 
+    \item There exists a Kraus representation with $r=\rank(\tau)$ operators such that $\langle K_i,K_j\rangle=\text{tr}(K_i^{\dagger} K_j) = c_i \delta_{i,j}$ for some constant $c_i$ that results from using an unnormalized $\gamma$ state. 
     \item $T$ is TP iff $\sum_i K_i^{\dagger}K_i = \mathbb{I}_1$, $T$ is unital iff $\sum_i K_i K_i^{\dagger} = \mathbb{I}_2$
     \item Any two Kraus representations $\{K_i\}_i$ and $\{L_i\}_i$ of a channel $T$ are related by a unitary $U$ via 
     \begin{align}
@@ -488,7 +491,7 @@ We saw before that $X\mapsto \sum_i K_i X K_i^{\dagger}$ are CP. The converse is
     
     ($\Rightarrow$) Going the other way, we know $T$ is CP $\Leftrightarrow$ $\tau \geq 0$, by Prop 4. 
     
-    \textbf{Claim:} $X\geq 0 \Leftrightarrow$ $\exists \{\ket{\psi_i}\}_{i=1}^r$ with $r \geq \text{rank} X$ such that $X=\sum_i \ket{\psi_i}\bra{\psi_i}$ with $\braket{\psi_i | \psi_j} \neq \delta_{ij}$ in general. 
+    \textbf{Claim:} $X\geq 0 \Leftrightarrow$ $\exists \{\ket{\psi_i}\}_{i=1}^r$ with $r \geq \rank X$ such that $X=\sum_i \ket{\psi_i}\bra{\psi_i}$ with $\braket{\psi_i | \psi_j} \neq \delta_{ij}$ in general. 
     \begin{proof}
     ($\Leftarrow$) $X = \sum_i \ket{\psi_i}\bra{\psi_i}$ for some $\{\ket{\psi_i}\}_i$. \\
     
@@ -508,8 +511,8 @@ We saw before that $X\mapsto \sum_i K_i X K_i^{\dagger}$ are CP. The converse is
     
     
     
-    \item Clear from proof of 1.) $r=\text{rank}(\tau) \implies$ at least $r$ pure states in the decomposition of $\tau$. This implies that there are at least $r$ Kraus operators. 
-    \item There exists a Kraus representation with $r=\text{rank}(\tau)$ operators such that $\langle K_i,K_j\rangle=\text{tr}(K_i^{\dagger} K_j) = c_i \delta_{i,j}$ for some constant $c_i$ that results from using an unnormalized $\gamma$ state. \\
+    \item Clear from proof of 1.) $r=\rank(\tau) \implies$ at least $r$ pure states in the decomposition of $\tau$. This implies that there are at least $r$ Kraus operators. 
+    \item There exists a Kraus representation with $r=\rank(\tau)$ operators such that $\langle K_i,K_j\rangle=\text{tr}(K_i^{\dagger} K_j) = c_i \delta_{i,j}$ for some constant $c_i$ that results from using an unnormalized $\gamma$ state. \\
     
     Let $\tau = \lambda_i \ket{X_i} \bra{X_i}$ be the spectral decomposition of $\tau$ with $\ket{\varphi_i}=\sqrt{\lambda_i} \ket{X_i}$. We have
     
