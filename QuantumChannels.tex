@@ -629,8 +629,109 @@ where $r=\dim\mathcal{H}_1\dim\mathcal{H}_2$. Complete $V$ to a unitary acting o
 \end{align}
 where the environment $E'$ is $\mathbb{C}^{d_1}\otimes \mathbb{C}^{d_2}$. This all allows us to consider noisy quantum evolution as unitary evolution on a larger closed system followed by a tracing out of the environment.
 
+\section{Linear representation}
+Let $T$ be a linear map $T: B(\mathcal{H}_1) \rightarrow B(\mathcal{H}_2)$. A key result from linear algebra is that \textbf{a linear map on a finite-dimensional Hilbert space can always be represented with a matrix with respect to a fixed basis.} 
+
+\begin{itemize}
+    \item If we are in a bounded Hilbert space $B(\mathcal{H})$, we have an associated inner product (called the Hilbert-Schmidt inner product) which is given as
+\begin{align}
+    \braket{X,Y}=\text{tr}(X^{\dagger}Y). 
+\end{align}
+    \item We can think of operators $X\in B(\mathcal{H})$ as vectors, and maps $T:B(\mathcal{H}_1)\rightarrow B(\mathcal{H}_2)$ as matrices. 
+    
+    \item Let $\{\ket{i}\}_{i=1}^{\text{dim}\mathcal{H}}$ be an orthonormal basis for $\mathcal{H}$. Then $\{\ket{i}\bra{j}\}_{i,j=1}^{\text{dim}\mathcal{H}}$ is a basis for $B(\mathcal{H})$. Note that $\text{dim}\mathcal{H}=d \implies \text{dim}B(\mathcal{H})=d^2$. 
+    
+    \item Define a linear mapping 
+    \begin{align}
+        \text{vec}: B(\mathcal{H})\rightarrow \mathcal{H}\otimes \mathcal{H}.
+    \end{align}
+    So, 
+    \begin{align}
+        \ket{i}\bra{j} \mapsto \ket{i}\otimes \ket{j} + \text{ linear extension }
+    \end{align}
+    \item  $\{\ket{i}\otimes \ket{j}\}_{i,j=1}^d$ is a basis for $\mathcal{H} \otimes \mathcal{H} \implies$ vec is an isomorphism, $B(\mathcal{H}) \cong \mathcal{H} \otimes \mathcal{H}$
+\end{itemize}
+\textbf{Properties of vec:}
+\begin{itemize}
+    \item vec$(\ket{\psi}\bra{\psi}) = \ket{\psi} \otimes \ket{{\varphi}^*}$ where $*$ denotes the complex conjugate in the basis $\{\ket{i}\}_i$
+    \item $\braket{X,Y}_{B(\mathcal{H})}=\braket{\text{vec}(X),\text{vec}(Y)}_{\mathcal{H}\otimes \mathcal{H}}$
+    \item vec$(A X B)=(A\otimes B^{T})$vec(X)
+\end{itemize}
+Let $\mathcal{N}: B(\mathcal{H}\rightarrow B(\mathcal{H}) $ be a linear map. Then via the vec map, this will correspond to some operator in $N \in B(\mathcal{H}\otimes \mathcal{H})$. In particular, there exist $A_i, B_i$ such that $N=\sum_i A_i \otimes B_i$. Then, for $X\in B(\mathcal{H})$ we would have 
+\begin{align}
+    \mathcal{N}(X) = \sum_i A_i X B_i^T,
+\end{align}
+by using the identity vec$(A X B^T)=(A\otimes B)\text{vec}(X)$. When considering quantum channels, we have
+$\mathcal{N}(X) = \sum_i K_i X K_i^{\dagger}$ which via vec will be $N=\sum_i K_i \otimes K_i^{*}$. This is called the \textit{transfer matrix} of $\mathcal{N}$. The unitality condition $\sum_i K_i K_i^{\dagger}=\mathbb{I}_2$ under vec becomes 
+\begin{align}
+    N\ket{\gamma} = (\sum_i K_i^{\dagger} \otimes K_i^T)\ket{\gamma}= \ket{\gamma}=\text{vec}(\mathbb{I})
+\end{align}
+The trace-preserving condition $\sum_i K_i^{\dagger} K_i^=\mathbb{I}_2$ under vec becomes 
+\begin{align}
+    N^{\dagger}\ket{\gamma}=(\sum_i K_i^{\dagger} \otimes K_i^{T})\ket{\gamma} = \ket{\gamma}.
+\end{align}
+Note that if $T=\sum_i A_i \otimes B_i^T$, then $T^{\dagger} = \sum_i B_i^T \otimes A_i.$ The linear representation is useful, because it translates channel composition into matrix multiplication. 
+
+\begin{proposition}
+Let $\mathcal{M}: B(\mathcal{H}_1)\rightarrow B(\mathcal{H}_2), $ $\mathcal{N}: B(\mathcal{H}_2)\rightarrow B(\mathcal{H}_3)$ be linear maps with transfer matrices $M,N$, respectively. Then, $N\cdot M$ is the transfer matrix of $\mathcal{N} \circ \mathcal{M}: B(\mathcal{H}_1)\rightarrow B(\mathcal{H}_3)$. 
+\end{proposition}
+
+\begin{tcolorbox}[colframe=black,breakable, colback=black!5, arc=0pt, outer arc=0pt,boxrule=0.5pt]
+\begin{proof}
+\begin{align}
+    \mathcal{M} &=\sum_i A_i X B_i^T \quad A_i, B_i \in B(\mathcal{H}_1,\mathcal{H}_2)\\
+    \mathcal{N} &= \sum_i C_i X D_i^T \quad C_i, D_i \in B(\mathcal{H}_2,\mathcal{H}_3)
+\end{align}
+The transfer matrices are
+\begin{align}
+    M &=\sum_i A_i \otimes B_i, \\
+    N &= \sum_i C_i \otimes D_i. 
+\end{align}
+We then have 
+\begin{align}
+    \mathcal{N} \circ \mathcal{M} &=\sum_{i,j} C_i A_j X B_j^T D_i^T\\
+    N\cdot M &= \sum_{i,j} C_i A_j \otimes D_i B_j
+\end{align}
+\end{proof}
+\end{tcolorbox}
+
+\begin{proposition}
+Let $\mathcal{N}: B(\mathcal{H}_1) \rightarrow B(\mathcal{H}_2)$ be a linear map with transfer matrix $N$ and $\tilde{\tau} = (\mathcal{N}\otimes \mathbb{I}_2)(\gamma)$. Then, $\Tilde{\tau}=N^{\Gamma}$ where $\Gamma$ is an involution ($\Gamma^2 = \mathbb{I}$) defined by 
+\begin{align}
+    \braket{i,j|X^{\Gamma}|k,l}&=\braket{i,k|X|j,l} \quad \ket{i,j}:= \ket{i}\otimes \ket{j}
+\end{align}
+\end{proposition}
+
+\begin{tcolorbox}[colframe=black,breakable, colback=black!5, arc=0pt, outer arc=0pt,boxrule=0.5pt]
+\begin{proof}
+Without loss of generality, $\mathcal{N}=XY^{\Gamma}$, where $X,Y \in B(\mathcal{H}_1,\mathcal{H}_2)$. Let $\{\ket{i}\}, \{\ket{\alpha}\}$ denote a basis on $\mathcal{H}_1,\mathcal{H}_2$, respectively. Then we have 
+\begin{align}
+    X&=\sum_{i,\alpha} x_{\alpha,i} \ket{\alpha}\bra{i},\\
+    Y&= \sum_{j,\beta} y_{\beta,j} \ket{\beta}\bra{j},
+\end{align}
+which allows us to write
+\begin{align}
+    N=X\otimes Y \sum_{i,j,\alpha,\beta} x_{\alpha,i} y_{\beta,j} \ket{\alpha}\bra{i} \otimes \ket{\beta}\bra{j},
+\end{align}
+then 
+\begin{align}
+    \tilde{\tau} &= (\mathcal{N}\otimes \mathbb{I})(\gamma),\\
+    &= \sum_{k,l} X \ket{k}\bra{l} Y^T \otimes \ket{k}\bra{l}, \\
+    &=\sum_{k,l,i,j,\alpha,\beta} x_{\alpha, i} y_{\beta,j} \ket{\alpha}\braket{i|k}\braket{l|j}\bra{\beta}\otimes \ket{k}\bra{l}, \\
+    &= \sum_{i,j,\alpha,\beta} x_{\alpha,i} y_{\beta,j} \ket{\alpha}\bra{\beta} \otimes \ket{i}\bra{j},
+\end{align}
+so we conclude
+\begin{align}
+    \bra{\alpha,\beta}N\ket{i,j} = \braket{\alpha,i|\tilde{\tau}|\beta,j}
+\end{align}
+\end{proof}
+Note that $\tilde{\tau}\in B(\mathcal{H}_2,\mathcal{H}_1,\mathcal{H}_1,\mathcal{H}_2)$ while $N\in B(\mathcal{H}_1\otimes \mathcal{H}_1, \mathcal{H}_2 \otimes \mathcal{H}_2)$.
+\end{tcolorbox}
+
+
 \bibliography{references}{}
 \bibliographystyle{unsrt}
+
 
 \end{document}
 
