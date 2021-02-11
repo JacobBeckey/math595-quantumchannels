@@ -1,7 +1,3 @@
-%thesis.tex 
-%Model LaTeX file for Ph.D. thesis at the 
-%School of Mathematics, University of Edinburgh
-
 \documentclass[10pt,oneside,longbibliography]{report} 
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
@@ -725,9 +721,233 @@ so we conclude
     \bra{\alpha,\beta}N\ket{i,j} = \braket{\alpha,i|\tilde{\tau}|\beta,j}
 \end{align}
 \end{proof}
-Note that $\tilde{\tau}\in B(\mathcal{H}_2,\mathcal{H}_1,\mathcal{H}_1,\mathcal{H}_2)$ while $N\in B(\mathcal{H}_1\otimes \mathcal{H}_1, \mathcal{H}_2 \otimes \mathcal{H}_2)$.
+Note that $\tilde{\tau}\in B(\mathcal{H}_2 \otimes \mathcal{H}_1,\mathcal{H}_1\otimes \mathcal{H}_2)$ while $N\in B(\mathcal{H}_1\otimes \mathcal{H}_1, \mathcal{H}_2 \otimes \mathcal{H}_2)$.
 \end{tcolorbox}
 
+\section{Complementary Channels}
+Let $T:B(\mathcal{H}_A)\rightarrow B(\mathcal{H}_B)$ be a quantum channel. To simplify notation, we write $T:A\rightarrow B$. From proposition 6, we know that there exists a Stinespring isometry $V:\mathcal{H}_A \rightarrow \mathcal{H}_B \otimes \mathcal{H}_E$ such that 
+\begin{align}
+    T(X_A) = \text{tr}_E VX_A V^{\dagger}
+\end{align}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{Figures/NoisyChannel.png}
+    \caption{Noisy channel: environment $E$ learns something about the input $X$.}
+    \label{fig:NoisyChannel}
+\end{figure}
+ A (non-unique) \textit{complementary channel} is 
+\begin{align}
+    T^c (X_A) = \text{tr}_B VX_A V^{\dagger}.
+\end{align}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.25\textwidth]{Figures/ComplementaryChannel.png}
+    \caption{Complementary channel.}
+    \label{fig:ComplementaryChannel}
+\end{figure}
+For a given channel $T$ with Stinespring isometry $V$, the isometry $\tilde{V}=(\mathbb{I} \otimes U)V$ with $U$ unitary leads to the same channel. This relies on the cyclicity of partial trace. That is, 
+\begin{align}
+    \text{tr}_E \left[(\mathbb{I}_B \otimes Y_E) X_{BE} (\mathbb{I}_B \otimes Z_E)\right] &= \text{tr}_E \left[X_{BE}(\mathbb{I}_B\otimes Z_E Y_E)\right]
+\end{align}
+Using this we can write
+\begin{align}
+    \text{tr}_E \tilde{V} X_A \tilde{V}^{\dagger} = \text{tr}_E \left[(\mathbb{I} \otimes U) VX_A V^{\dagger}(\mathbb{I}\otimes U^{\dagger})\right] = \text{tr}_E V X_A V^{\dagger} = T(X_A)
+\end{align}
+So, if we take an arbitrary unitary $U$, we can write $\tilde{V} =(\mathbb{I} \otimes U)V$ and then
+\begin{align}
+    \text{tr}_B \tilde{V}X_A \tilde{V}^{\dagger} &= \text{tr}_B \left[(\mathbb{I}\otimes U ) VX_A V^{\dagger} (\mathbb{I}\otimes U^{\dagger})\right]\\
+    &= U \text{tr}_B (V X_A V^{\dagger})U^{\dagger} \\
+    &= U T^c (X_A) U^{\dagger}
+\end{align}
+Example: $V=\sum_i K_i \otimes \ket{i}$ where $\{\ket{i}\}$ is \textit{some} orthonormal basis. 
+
+\chapter{Classes of Quantum Channels}
+\section{Qubit channels}
+Note: please see Nielsen and Chuang for figures depicting these channels' actions on the Bloch sphere. I may make nice ones at some point but for now, I am too lazy.
+\begin{enumerate}
+    \item \textbf{Bit flip channel.} First, we look at the classical bit flip channel, the properties of which were established by Claude Shannon in his seminal 1948 paper. The quantum version is simply given by the Pauli $X$
+    operator,
+    \begin{align}
+        X&= \begin{pmatrix}
+        0 & 1 \\
+        1 & 0
+        \end{pmatrix},
+    \end{align}
+    which acts as
+    \begin{align}
+        X\ket{0} &= \ket{1},\\
+        X\ket{1} &= \ket{0}.
+    \end{align}
+    It's eigenbasis is $\ket{\pm}:=\frac{1}{\sqrt{2}}(\ket{0}\pm\ket{1})$. So, $X\ket{+} \ket{+}$ and $X\ket{-}=-\ket{-}$. The channel acts as
+    \begin{align}
+        \mathcal{F}_{p}^X: \rho \mapsto (1-p)\rho + p X\rho X
+    \end{align}
+    So, the Kraus operators are $\sqrt{1-p} \mathbb{I}, \sqrt{p} X$
+    
+    \item\textbf{ Phase-flip/Z-dephasing channel} 
+    \begin{align}
+        Z&= \begin{pmatrix}
+        1 & 0 \\
+        0 & -1
+        \end{pmatrix}\\
+        Z \ket{0} &= \ket{0}\\
+        Z \ket{1} &= -\ket{1} \\
+        Z \ket{+} &= \ket{-} \\
+        Z \ket{-} &= \ket{+}
+    \end{align}
+    The channel is given as
+    \begin{align}
+        \mathcal{F}_{p}^Z: \rho \mapsto (1-p) \rho + p Z\rho Z
+    \end{align}
+    \item \textbf{Bit-phase flip/Y-dephasing channel}
+    \begin{align}
+    Y&=\begin{pmatrix}
+        0 & -i \\
+        i & 0
+        \end{pmatrix}\\
+        \ket{\pm i} &=\frac{1}{\sqrt{2}}(\ket{0}\pm i\ket{1})\\
+        Y \ket{i} &= \ket{i}\\
+        Y \ket{-i} &= -\ket{-i} \\
+        Y \ket{0} &= i\ket{1} \\
+        Y \ket{1} &= -i\ket{0}
+    \end{align}
+    The channel is then
+    \begin{align}
+        \mathcal{F}_{p}^Y: \rho &\mapsto (1-p)\rho +p Y\rho Y \\
+        &= (1-p)\rho +p XZ\rho ZX 
+    \end{align}
+    
+    \item \textbf{Depolarizing channel.} Corresponds to an error model in which each Pauli error occurs with equal probability. The channel is
+    \begin{align}
+        \mathcal{D}_p: \rho \mapsto (1-p)\rho + \frac{p}{3}\left(X\rho X + Y\rho Y + Z\rho Z\right)
+    \end{align}
+    with equal probability $p/3$. The Kraus operators are then $\sqrt{1-p} \mathbb{I}, \sqrt{p/3} X, \sqrt{p/3} Y, \sqrt{p/3}Z$. Thus, the Kraus rank is 4 for this channel when $p\in (0,1)$. An alternative representation is given by 
+    \begin{align}
+        \rho \mapsto (1-q)\rho + q \text{tr}(\rho) \frac{\mathbb{I}}{2}
+    \end{align}
+    This represents replacing the input state with the maximally mixed state with ``probability'' $q$ ($q$ can be greater that 1).
+
+What about the relation $p \leftrightarrow q$? To deduce this, we can use the identity 
+\begin{align}
+    \frac{1}{2}\mathbb{I}_2 = \frac{1}{4} \left(\rho + X \rho X + Y\rho Y + Z \rho Z\right) \forall \rho \in B(\mathbb{C}^2)
+\end{align}
+We can then derive the relationship between $p$ and $q$. We have
+\begin{align}
+    \frac{1}{2} \mathbb{I}_2 &= \frac{1}{4}\left(\rho + X\rho X + Y \rho Y + Z\rho Z\right)\quad \forall \rho \in B(\mathbb{C}^2)
+\end{align}
+\begin{align}
+    (1-p) \rho +p \frac{\mathbb{I}}{2}&=(1-q)\rho + \frac{q}{4}\left(\rho + X\rho X + Y\rho Y +Z \rho Z \right)\\
+    \implies \Aboxed{q&=\frac{4}{3}p}
+\end{align}
+
+\item \textbf{Generalized Pauli channel.} Let $\vec{p}=(p_0,p_1,p_2,p_3)$ be a probability distribution. The generalized Pauli channel is 
+\begin{align}
+    \mathcal{N}_{\vec{p}}(\rho) = p_0 \rho + p_1 X \rho X + p_2 Y \rho Y + p_3 Z \rho Z
+\end{align}
+where we recover the depolarizing channel by setting $p_0=1-p$ and $p_i = p/3$. Note that for any $\vec{p},$ this channel is unital.
+
+Pauli channels are interesting from an information theoretic standpoint. Classically, they are very easily understood. Quantum mechanically, they very much are not understood (except in the case of flip or dephasing channels).
+\end{enumerate}
+
+In what sense are these flip channels de-phasing? Let us look at the example of the phase flip channel
+\begin{align}
+    \mathcal{F}_{p}^{Z}: \rho \mapsto (1-p)\rho + p Z\rho \rho Z.
+\end{align}
+We can understand the justification of the term de-phasing by looking at the action on the density matrix
+\begin{align}
+    \begin{pmatrix}
+    \rho_{11} & \rho_{12}\\
+    \rho_{21} & \rho_{22}
+    \end{pmatrix} \mapsto 
+    \begin{pmatrix}
+    \rho_{11} & (1-2p)\rho_{12}\\
+    (1-2p)\rho_{21} & \rho_{22}
+    \end{pmatrix}
+\end{align}
+where $\rho \geq 0, \text{tr}(\rho)=1 \implies \rho_{11}+\rho_{22}=1$. We can make the following observations
+\begin{enumerate}
+     \item If $\rho = x \ket{0}\bra{0} + (1-x)\ket{1}\bra{1}$, then 
+     \begin{align}
+         \mathcal{F}_p^Z(\rho)=\rho \quad \forall p\in [0,1]
+     \end{align}
+     \item $p=\frac{1}{2}$: the channel is diagonal in the z-basis for all input states
+\end{enumerate}
+We can also think about sending classical information through this channel. Let us encode $0$ as $\ket{0}\bra{0}$ and $1$ as $\ket{1}\bra{1}$. That is, we are encoding one bit in one qubit. We can do this reliably with this channel because
+\begin{align}
+    \mathcal{F}_p^Z (\ket{0}\bra{0}) &= \ket{0}\bra{0}, \\
+     \mathcal{F}_p^Z (\ket{1}\bra{1}) &= \ket{1}\bra{1}.
+\end{align}
+This means that we can send one bit through the channel. The key idea is: this channel preserves classical information because it preserves the orthogonality of the basis states. The same would hold for the $X$ channel but you would have to encode info in the $\ket{\pm}$ basis. 
+
+\begin{enumerate}
+\setcounter{enumi}{5}
+    \item \textbf{Amplitude damping channel.} Physical model: 2-level system (e.g. an atom with a ground state $\ket{0}$ and excited state $\ket{1}$. If the system is in an excited state $\ket{1}$, it decays with a certain probability, $\gamma$, emitting a photon to the environment. How can we capture this decay process mathematically? Consider the isometry 
+    \begin{align}
+        \ket{0}_A &\mapsto \ket{0}_B \ket{0}_E,\\
+        \ket{1} &\mapsto \sqrt{1-\gamma} \ket{1}_B \ket{0}_E +\sqrt{\gamma}\ket{0}_B\ket{1}_E.
+    \end{align}
+Compactly we can write
+
+The Kraus operators for this channel are 
+\begin{align}
+    K_0 &=\bra{0}_E V = \ket{0}\bra{0}_B + \sqrt{1-\gamma} \ket{1}\bra{1})_B = \begin{pmatrix}
+    1 & 0 \\
+    0 & \sqrt{1-\gamma}
+    \end{pmatrix},\\
+     K_1&= \bra{1}_E V = \sqrt{\gamma}\ket{0}_B\bra{1}_A = \begin{pmatrix}
+    0 & \gamma \\
+    0 & 0
+    \end{pmatrix}.
+\end{align}
+In the Kraus representation, then, we can write the amplitude damping channel 
+\begin{align}
+    \mathcal{A}_{\gamma}: \rho \mapsto K_0 \rho K_0^{\dagger} + K_1 \rho K_1^{\dagger}.
+\end{align}
+We note that the amplitude damping channel is not unital. Therefore, it is not a Pauli (or even a mixed-unitary) channel. Interestingly, it is completely understood how to send \textit{quantum information} through the amplitude damping channel; however, it is not known how much classical information can be sent through this channel.
+\item \textbf{Erasure channel.} Classical model:
+
+Quantum version: $\mathcal{E}_p: B(\mathcal{H}) \rightarrow B(\mathcal{H} \otimes \mathbb{C})$. The channel acts as
+\begin{align}
+    \rho \mapsto (1-p) \rho + p \text{tr}(\rho) \ket{e}\bra{e}.
+\end{align}
+This channel has Kraus operators given by $K_0 \sqrt{1-p} \mathbb{I}, K_1 \sqrt{p}\ket{0}\bra{0}, K_2 \sqrt{p} \ket{e}\bra{1}.$ Note that $\ket{e}$ must be orthogonal to all $\rho \in B(\mathcal{H})$. That is, $\braket{\ket{e}\bra{e},\rho}=0 \quad \forall \rho \in B(\mathcal{H})$. Bob can always tell whether erasure happened by performing a measurement! This is a very well-understood quantum channel.
+\end{enumerate}
+
+\section{Generalized dephasing channels}
+A generalized dephasing channel leaves a \textit{fixed} orthonormal basis invariant and it dephases off-diagonal elements with respect to that fixed basis. That is, we lose quantum coherences under the action of a generalized dephasing channel. 
+
+Construction: $\mathcal{H}=\mathbb{C}^d$ with orthonormal basis $\{\ket{i}\}_{i=1}^d$. Choose an environment $\mathcal{H}_E$ with dim$\mathcal{H}_E :=|E| \geq 2$, and let $\{\varphi_i\}_{i=1}^{|E|}$ be \textit{some} set of pure states on $E$. This set is normalized but not orthogonal. Then, define the isometry
+\begin{align}
+   V: \ket{i}_A \mapsto \ket{i}_B \otimes \ket{\varphi_i}_E.
+\end{align}
+The Stinespring extension is
+\begin{align}
+    \mathcal{N}(\rho_A) &= \text{tr}_E V \rho_A V^{\dagger}, \\
+    &= \sum_{i,j} \ket{i}\rho \bra{i} \ket{i}\bra{j}_B \text{tr}\left(\ket{\varphi_i}\bra{\varphi_j}\right),\\
+    &=\sum_{i,j} \braket{\varphi_i|\varphi_j} \braket{i|\rho|j} \ket{i}\bra{i}_B.
+\end{align}
+Let us confirm this channel acts as expect. 
+\begin{align}
+    [\mathcal{N}(\rho)]_{kk} &= \braket{\varphi_k|\varphi_k} \bra{k}\rho \ket{k} = \rho_{kk}, \\
+    [\mathcal{N}(\rho)]_{jk} &=\braket{\varphi_j|\varphi_k} \bra{j}\rho \ket{k},
+\end{align}
+but $0 < \braket{\varphi_j|\varphi_k} \leq 1$. Thus, we see that the diagonals are preserved but the off-diagonals are dephased. 
+
+Higher-dimensional example: Let $d\geq 2$, and define two unitaries 
+\begin{align}
+    X\ket{i} &= \ket{i+1 \text{ mod } d} \quad \text{ (shift operator) } \\
+    Z\ket{j} &= \omega^j \ket{j}, \text{ where } \quad \omega=\exp{\left(\frac{2 \pi i}{d}\right)} \quad \text{ (clock operator) }
+\end{align}
+This generalizes the Pauli operators: $X^d=Z^d = \mathbb{I}$. These are the generators of the Heisenberg-Weyl group:
+\begin{align}
+    \{\omega^j Z^k X^l : j,k,l \in [d]\}.
+\end{align}
+So, for $\rho \in B(\mathbb{C}^d)$ we maps like 
+\begin{align}
+    \rho &\mapsto (1-p)\rho + p X\rho X^{\dagger}, \\
+    \rho &\mapsto (1-p)\rho +\frac{p}{3} Z\rho Z^{\dagger} + \frac{2p}{3} Z^2 \rho (Z^{\dagger})^2.
+\end{align}
 
 \bibliography{references}{}
 \bibliographystyle{unsrt}
