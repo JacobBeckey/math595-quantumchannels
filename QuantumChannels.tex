@@ -649,7 +649,7 @@ Let $T$ be a linear map $T: B(\mathcal{H}_1) \rightarrow B(\mathcal{H}_2)$. A ke
 \end{itemize}
 \textbf{Properties of vec:}
 \begin{itemize}
-    \item vec$(\ket{\psi}\bra{\psi}) = \ket{\psi} \otimes \ket{{\varphi}^*}$ where $*$ denotes the complex conjugate in the basis $\{\ket{i}\}_i$
+    \item vec$(\ket{\psi}\bra{\varphi}) = \ket{\psi} \otimes \ket{{\varphi}^*}$ where $*$ denotes the complex conjugate in the basis $\{\ket{i}\}_i$
     \item $\braket{X,Y}_{B(\mathcal{H})}=\braket{\text{vec}(X),\text{vec}(Y)}_{\mathcal{H}\otimes \mathcal{H}}$
     \item vec$(A X B)=(A\otimes B^{T})$vec(X)
 \end{itemize}
@@ -948,7 +948,206 @@ So, for $\rho \in B(\mathbb{C}^d)$ we maps like
     \rho &\mapsto (1-p)\rho + p X\rho X^{\dagger}, \\
     \rho &\mapsto (1-p)\rho +\frac{p}{3} Z\rho Z^{\dagger} + \frac{2p}{3} Z^2 \rho (Z^{\dagger})^2.
 \end{align}
+The generalized de-phasing channels have full classical capacity 
+\begin{align}
+    C(\mathcal{N})=\log{d} \quad (\text{ in general, } C(\mathcal{N})\leq \log{d})
+\end{align}
 
+Sketch of a proof: we know that for a generalized dephasing channel, there exists an orthonormal basis $\{\ket{i}\}_i$ such that 
+\begin{align}
+    \mathcal{N}(\ket{i}\bra{i}) = \ket{i}\bra{i}
+\end{align}
+of classical signals/messages $x_i, \dots, x_d$. We can use the encoding
+\begin{align}
+    x_i \mapsto \ket{i}\bra{i}
+\end{align}
+where $\braket{i|j}=\delta_{ij}$. Thus, $d$ messages can be sent perfectly. So $\log{d}$ bits of classical info can be sent through $N$. Bob can measure the output to retrieve the classical message. 
+
+\subsection{Detour: Holevo information ($\mathcal{X}$-quantity)}
+Recall: the von Neumann entropy is defined as 
+\begin{align}
+    S(\rho) = - \text{tr} \rho \log \rho.
+\end{align}
+When one has the spectral decomposition of $\rho=\sum_i \lambda_i \ket{\psi_i}\bra{\psi_i}$, the von Neumann entropy is just the Shannon entropy for the eigenvalue distribution
+\begin{align}
+    S(\rho) = -\sum_i \lambda_i \log \lambda_i.
+\end{align}
+If we then have an ensemble of quantum states $E=\{p_x, \rho_x\}$, we have
+\begin{align}
+    \mathcal{X}(E,\mathcal{N})=S(\sum_x p_x \mathcal{N}(\rho_x)) - \sum_x p_x S(\mathcal{N}(\rho_x))
+\end{align}
+
+The Holevo information is then defined as
+\begin{align}
+ \Aboxed{\text{Holevo Information, } \mathcal{X}(\mathcal{N})=\max_{E} \mathcal{X}(E,\mathcal{N})}
+\end{align}
+A fundamental result due to Holevo, Schumacher, and Westmoreland is 
+\begin{align}
+    \Aboxed{C(\mathcal{N})\geq \mathcal{X}(\mathcal{N})}
+\end{align}
+
+If $\mathcal{N}$ is a generalized dephasing channel, there exists an orthonormal basis $\{\ket{i}\}$ such that $\mathcal{N}(\ket{i}\bra{i})=\ket{i}\bra{i}$ for all $i$. Let our ensemble be 
+\begin{align}
+    \rho_i &= \ket{i}\bra{i} \\
+    p_i &= \frac{1}{d}, 
+\end{align}
+which implies
+\begin{align}
+    \bar{\rho} = \sum_i p_i \rho_i = \frac{1}{d} \mathbb{I}
+\end{align}
+Then, $E_n = \{\frac{1}{d}, \rho_i \}$, so the Holevo quantity is 
+\begin{align}
+    \mathcal{X} (E_n, \mathcal{N}) &= S(\sum_i p_i \mathcal{N}(\rho_i))-\sum_i p_i S(\mathcal{N}(\rho_i)) \\
+    &= S(\sum_i p_i \rho_i) - \sum_i p_i S(\rho_i)\\
+    &=\log{d}-0 \\
+    &= \log{d}
+\end{align}
+Thus, we have the following chain of inequalities 
+\begin{align}
+    \log{d} \leq \mathcal{X}(\mathcal{N}) \leq C(\mathcal{N}) \leq \log{d} \implies \Aboxed{C(\mathcal{N}) = \log{d}}
+\end{align}
+as desired.
+
+\subsection{Some comments on last lecture}
+\begin{itemize}
+    \item The rank of the Kraus operators is not unitarily invariant. We can see this by examining the 50-50 dephasing channel. 
+    \begin{align}
+        \rho \mapsto \frac{1}{2} \rho + \frac{1}{2} Z \rho Z \implies K_0 = \frac{1}{\sqrt{2}} \mathbb{I},\quad K_1 = \frac{1}{\sqrt{2}} Z
+    \end{align}
+    We can apply a Hadamard transform to the operators to obtain new Kraus operators
+    \begin{align}
+    L_i &= \sum_j H_{ij}K_j, \\
+       \implies L_0 &= \ket{0}\bra{0}, L_1 = \ket{1}\bra{1},
+    \end{align}
+    which are rank-1 operators now when the previous Kraus operators were full rank. 
+    \item Every unital qubit channel is unitarily equivalent to a Pauli channel. That is, if $\mathcal{N}: B(\mathbb{C}^2)\rightarrow B(\mathbb{C}^2)$ is a unital channel, then there are unitaries $U,V$ such that 
+    \begin{align}
+        M(\rho)= U\mathcal{N}(V \rho V^{\dagger})U^{\dagger}
+    \end{align}
+    is Pauli.
+    \item mixed unitary channels 
+    \begin{align}
+        \rho &\mapsto \sum_i p_i U_i \rho U_i^{\dagger}, \quad U_i \text{ unitary}\\
+        \mathbb{I} &\mapsto \sum_i p_i U_i U_i^{\dagger} = \mathbb{I} \quad \text{ unital! }
+    \end{align}
+    Every unital qubit channel is mixed unitary. Watrous' book provides a nice example of a unital channel that is \textit{not} mixed unitary:
+    \begin{align}
+        X \in B(\mathbb{C}^3), \quad \rho \mapsto \frac{1}{2}\text{tr}(X) \mathbb{I} -\frac{1}{2} X^T
+    \end{align}
+\end{itemize}
+
+\section{Entanglement-breaking channels}
+Reminder: A bipartite $\rho_{AB}$ is called separable if it lies in the convex hull of product states. That is,
+\begin{align}
+    \rho_{AB} \in \text{conv}\{\omega_A \otimes \sigma_B : \omega_{A(B)} \text{ state on } \mathcal{H}_{A(B)}\}
+\end{align}
+Explicitly, 
+\begin{align}
+    \rho_{AB} = \sum_i p_i \omega^i_A \otimes \sigma_B^i
+\end{align}
+
+\begin{definition}
+A channel $\mathcal{N}: A\rightarrow B$ is entanglement-breaking if 
+\begin{align}
+    (\mathbb{I}_R \otimes \mathcal{N})(\rho_{RA}) 
+\end{align}
+is separable for any $\rho_{RA}$.
+\end{definition}
+
+\begin{proposition}
+The following are all equivalent
+\begin{itemize}
+    \item $\mathcal{N}: A\rightarrow B$ is entanglement breaking
+    \item $\tau_{AB}^{\mathcal{N}}=(\mathbb{I}_A \otimes \mathcal{N})(\gamma_{AA'})$ is separable 
+    \item $\mathcal{N}$ has a Kraus representation with rank-1 Kraus operators 
+    \item $\mathcal{N}$ is a measure-and-prepare channel: there exists POVM $E=\{E_i\}_i$ and states $\{\sigma_i\}_i$ such that 
+    \begin{align}
+        \mathcal{N}(\rho) = \sum_i \text{tr}(\rho E_i) \sigma_i
+    \end{align}
+    where we recall that a POVM must satisfy $E_i \geq 0, \sum_i E_i = \mathbb{I}$.
+\end{itemize}
+\end{proposition}
+
+\begin{proof} 
+(a $\implies$ b): ($\mathbb{I}_R\otimes \mathcal{N}$)($\rho_{RA}$) is separable for all $\rho_{RA}$. In particular, for $\gamma_{RA}, \quad (\ket{\gamma}_{RA})=\sum_i \ket{i}_R \ket{i}_A)$.
+
+(b$\implies$ c): $\tau_{AB}^{\mathcal{N}}$ is separable: there exist pure states $\psi_i = \ket{\psi_i}\bra{\psi_i}_A$ and $\varphi_i = \ket{\varphi_i}\bra{\varphi_i}_B$ such that $\frac{1}{d} \tau^{\mathcal{N}}_{AB}=\sum_i p_i \psi_i \otimes \varphi_i$, where $d=|A|$. Then, set $K_i = \sqrt{p_i d}\ket{\varphi_i}_B \bra{\bar{\psi}_i}_A$. We can then check the action of these operators
+\begin{align}
+    \frac{1}{d} \sum_i (\mathbb{I}\otimes K_i) (\gamma_{AA'})(\mathbb{I}_A \otimes K_i)^{\dagger}&= \frac{1}{d} \sum_{i,j,k} \ket{j}\bra{k}_A \otimes K_i \ket{j}\bra{k}_{A'} K_i^{\dagger} \\
+    &= \sum_{i,j,k} d p_i \ket{j}\bra{k}_A \otimes \bra{\bar{\psi}_i}\ket{j}\bra{k}\ket{\bar{\psi}_i} \ket{\varphi_i}\bra{\varphi_i}_B\\
+    &=\sum_{i,j,k} p_i \ket{j}\bra{k}_A \otimes \bra{\bar{\psi}_i}\ket{j}\bra{k}\ket{\bar{\psi}_i} \ket{\varphi_i}\bra{\varphi_i}_B\\
+    &=\sum_i p_i \left(\sum_{j,k} \braket{k | \bar{\psi}_i | j} \ket{j} \bra{k}\right)\otimes \ket{\varphi_i}\bra{\varphi_i}_B\\
+    &=\sum_i p_i (\psi_i) \otimes \varphi_i \\
+    &= \frac{1}{d} \tau_{AB}^{\mathcal{N}}
+\end{align}
+\begin{align}
+    \sum_{i} K_i^{\dagger} K_i &=\mathbb{I} \\
+   &= d \sum_i p_i \ket{\bar{\psi}_i} \braket{\varphi_i | \varphi_i}\bra{\bar{\psi}_i}\\
+    &= d \sum_i p_i \bar{\psi}_i \\
+    &= d(\sum_i p_i \bar{\psi_i})\\
+    &=d \frac{1}{d} \bar{\mathbb{I}}_A\\
+    &= \mathbb{I}_A
+\end{align}
+
+(c $\implies$ d): rank($K_i$)=1: $K_i = \ket{\mathcal{X}_i}_B \bra{\omega_i}_A$ for some vectors $\ket{\mathcal{X}_i}_B ,\ket{\omega_i}_A, \braket{\mathcal{X}_i |\mathcal{X}_i}=1$.
+
+\begin{align}
+    \mathcal{N} (\rho) &= \sum_i K_i \rho K_i^{\dagger} \\
+    &= \sum_i \braket{\omega_i | \rho | \omega_i} \ket{\mathcal{X}_i} \bra{\mathcal{X}_i}_B 
+\end{align}
+POVM: $\omega = \{\omega_i\}$, states: $\mathcal{X}_i$
+\begin{align}
+    \mathbb{I} &= \sum_i K_i^{\dagger}K_i \\
+    &= \sum_i \ket{\omega_i} \braket{\mathcal{X}_i | \mathcal{X}_i}\bra{\omega_i} \\
+    &= \sum_i \ket{\omega_i}\bra{\omega_i}
+\end{align}
+ 
+ (d $\implies$ a): Let $\rho_{RA}$ be arbitrary: 
+ \begin{align}
+     (\mathbb{I}_R \otimes \mathcal{N})(\rho_{RA}) &= \sum_i \text{tr}_B \left[(\mathbb{I}_A \otimes E_i)\rho_{RA}\right]\otimes \sigma_i \\
+     &= \sum_i \text{tr}_B \left[(\mathbb{I}_R \otimes \sqrt{E_i}) \rho_{RA}(\mathbb{I}_R \otimes \sqrt{E_i})\right] \otimes \sigma_i \\
+     &= \sum_i p_i \omega_i \otimes \sigma_i
+ \end{align}
+ where $p_i = \text{tr}(E_i \rho_{RA}), \omega_i = \frac{1}{p_i} \text{tr}_B \left[(\mathbb{I}_R \otimes \sqrt{E_i})\rho_{RA} (\mathbb{I}_A \otimes \sqrt{E_i})\right]\geq 0$. 
+\end{proof}
+
+We note that there are \textit{some} channel capacities of entanglement-breaking channels that are understood.
+\begin{itemize}
+    \item Quantum information transmission is equivalent to generating entanglement. Because entanglement-breaking channels cannot do that, their quantum capacity is zero.
+    \item $C(\mathcal{N}) \geq \mathcal{N}, C(\mathcal{N})=\text{sup}_{n \in \mathbb{N}} \frac{1}{n} \mathcal{X}(\mathcal{N}^{\otimes n})$. Entanglement-breaking channels destroy entanglement between different inputs. This implies that 
+    \begin{align}
+        C(\mathcal{N}) = \mathcal{X}(\mathcal{N})
+    \end{align}
+    BUT: $\mathcal{X}(\mathcal{N})$ is NP-hard to compute, so this relationship doesn't actually get us much.
+\end{itemize}
+\section{PPT-channels}
+Checking separability is NP-hard. So, is there some easier criterion? The standard relaxed criterion is following.
+
+\begin{definition}
+Peres-Horodecki criterion: if $\rho_{AB}$ is separable if $\rho_{AB}$ has a positive partial transpose with respect to either party.  
+\end{definition}
+Let us see why this is a reasonable criterion for separability. If $\rho_{AB}$ is separable, 
+\begin{align}
+    \rho_{AB} &= \sum_i p_i \omega_A^i \otimes \sigma_B^i \\
+    \implies  \rho_{AB}^{T_B} &= \sum_i p_i \omega_A^i \otimes (\sigma_B^i)^T \geq 0
+\end{align}
+\begin{itemize}
+    \item if $\rho_{AB}$ is NPT $\implies \rho_{AB} \notin$SEP. 
+    \item if $|A|\cdot |B| \leq 6$, then $\rho_{AB} \in$ SEP $\Leftrightarrow \rho_{AB} \in$ PPT.  
+\end{itemize}
+
+\begin{definition}
+A channel $\mathcal{N}: A \rightarrow B$ is called PPT if ($\mathcal{I}_R \otimes \mathcal{N})(\rho_{RA})$ is PPT for all $\rho_{RA}$.
+\end{definition}
+
+\begin{proposition}
+The following are all equivalent
+\begin{itemize}
+    \item $\mathcal{N}: A\rightarrow B$ is PPT
+    \item $\tau^{\mathcal{N}}_{AB}$ is PPT 
+    \item $\vartheta \circ \mathcal{N}$ is CP (Recall that when $\vartheta: X \mapsto X^T: (\mathbb{I}_R \otimes \vartheta)(\gamma)= \mathbb{F} \ngeq 0$)
+\end{itemize}
+\end{proposition}
 \bibliography{references}{}
 \bibliographystyle{unsrt}
 
