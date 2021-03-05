@@ -1148,6 +1148,224 @@ The following are all equivalent
     \item $\vartheta \circ \mathcal{N}$ is CP (Recall that when $\vartheta: X \mapsto X^T: (\mathbb{I}_R \otimes \vartheta)(\gamma)= \mathbb{F} \ngeq 0$)
 \end{itemize}
 \end{proposition}
+
+\begin{tcolorbox}[colframe=black,breakable, colback=black!5, arc=0pt, outer arc=0pt,boxrule=0.5pt]
+\begin{proof}
+(a $\Rightarrow$ b): True by definition. We know
+\begin{align}
+    (\mathbb{I}_A \otimes \mathcal{N})(\rho_{AA'})
+\end{align}
+is PPT, in particular for $\rho=\gamma_{AA'}$.
+
+(b $\Rightarrow$ c): \begin{align}
+    (\mathbb{I}_A \otimes \vartheta \circ \mathcal{N})(\gamma) &= (\mathbb{I}\otimes \vartheta)(\mathbb{I} \otimes \mathcal{N})(\gamma_{AA'}) \\
+    &= (\mathbb{I}_A \otimes \vartheta) (\tau_{AB}^{\mathcal{N}}) \\
+    &= (\tau_{AB}^{\mathcal{N}})^{T_B} \geq 0 
+\end{align}
+
+(c $\Rightarrow$ a) $\vartheta \circ \mathcal{N}$ is CP: 
+\begin{align}
+    (\mathbb{I}_R \otimes \vartheta \circ \mathcal{N})(\rho_{RA}) \geq 0 \quad \forall \rho_{RA} \geq 0
+\end{align}
+This implies $\mathcal{N}$ is PPT.
+\end{proof}
+\end{tcolorbox}
+
+\textbf{Remarks}: In general, $\vartheta \circ \mathcal{N}$ is \textit{not} CP. However, for every CP map $\mathcal{N}$, the map $\vartheta \circ \mathcal{N} \circ \vartheta$ is CP (see exercises).
+
+What about the capacities of PPT channels?
+\begin{itemize}
+    \item Horodeckis: PPT states are undistillable. Entanglement distillation: given iid copies of a state $\rho_{AB}$, the goal is to convert these copies into a smaller number of maximally entangled states. If there is an entanglement distillation protocol (LOCC) such that 
+    \begin{enumerate}
+        \item error of the protocol tends to 0 as $n\Rightarrow \infty$
+        \item rate c:= $\frac{1}{n} \log{m_n} \rightarrow c>0$ as $n$ goes to infinity
+    \end{enumerate}
+    then $\rho_{AB}$ is \textit{distillable}. We conclude that the quantum capacity for PPT channels is zero. This result even holds if two-way classical communication is allowed!
+\end{itemize}
+
+We note that the set of protocols allowing only one-way communication is a strict subset of the set of protocols allowing two-way communication. Even still, the Horodecki's showed that the quantum capacity of all PPT channels is zero in both cases. Also note that the classical capacity is generally unknown. 
+
+\section{Anti-degradable channels}
+Let $\mathcal{N}$ be a quantum channel from $A$ to $B$ with an isometry $V: \mathcal{H}_A \rightarrow \mathcal{H}_B \otimes \mathcal{H}_E$ such that $\mathcal{N}(\rho) = \text{tr}_E V \rho V^{\dagger}$. Recall that the completmentary channel is $\mathcal{N}^c (\rho) = \text{tr}_B V \rho V^{\dagger}$.
+
+\begin{definition}
+$\mathcal{N}$ as above is called antidegradable if there exists a channel $\mathcal{A}: E \rightarrow B$ such that 
+\begin{align}
+    \mathcal{N} = \mathcal{A}\circ \mathcal{N}^c
+\end{align}
+\end{definition}
+Intuition: Eve (environment) can locally obtain Bob's output via the channel $\mathcal{A}$. Antidegradable channels cannot transmit quantum information and thus have zero quantum capacity, $Q(\mathcal{N})=0.$
+
+A ``proof'' of this is as follows. Assume that this channel has non-zero quantum capacity. This means that Alice can faithfully send qubits to Bob at a positive rate. But there is a protocol based on the channel $\mathcal{A}$ that lets Eve implement the same protocol that Alice and Bob use. This violates no-cloning and is thus prohibited. 
+
+\noindent \textbf{Examples of anti-degradable channels}:
+\begin{enumerate}
+    \item erasure channel $\mathcal{E}_p: \rho \mapsto (1-p)\rho + p \text{tr}(\rho) \ket{e}\bra{e}$ for $p\geq \frac{1}{2}$. 
+    
+    Let $\mathcal{H}_1 = \mathbb{C}^2$ be the input space. Let the $\mathcal{H}_2=\mathbb{C}$ be an erasure flag. Let $\mathcal{E}_p : B(\mathcal{H}_1) \rightarrow B(\mathcal{H}_1 \oplus \mathcal{H}_2)$. That is, an input state maps as
+    \begin{align}
+        \rho \mapsto (1-p) \tilde{\rho} + p \text{tr}(\rho) \ket{e}\bra{e}
+    \end{align}
+    So, how do we embed our input state in the larger space? We use a pretty trivial embedding that is represented as:
+    \begin{align}
+        \hat{\rho} = \begin{pmatrix}
+        \rho_{00} & \rho_{01} & 0 \\
+        \rho_{10} & \rho_{11} & 0 \\
+        0 & 0 & 0 
+        \end{pmatrix}
+    \end{align}
+    and the erasure flag is simply
+    \begin{align}
+        \ket{e}\bra{e} =  \begin{pmatrix}
+        0 & 0 & 0 \\
+        0 & 0 & 0 \\
+        0 & 0 & 1
+        \end{pmatrix}.
+    \end{align}
+    Note that the complementary channel of the erasure channel has the same form but with the probabilities flipped:
+    \begin{align}
+        \mathcal{E}^c_p: B(\mathcal{H}_1) \rightarrow B(\mathcal{H}_1 \oplus \mathcal{H}_2 ), \rho \mapsto p \tilde{\rho} + (1-p) \text{tr}(\rho) \ket{e}\bra{e}.
+    \end{align}
+    Now consider $p\geq \frac{1}{2}$ and define $q=\frac{2p-1}{p}$. the idea is that we erase $\tilde{\rho}$ with probability $q$ and do nothing with $\ket{e}\bra{e}$.
+    
+    \begin{align}
+        \mathcal{E}_q (p\rho) &= p(1-q) \tilde{\rho} + p q \text{tr}(\rho) \ket{e}\bra{e} \\
+        &= (1-p) \tilde{\rho} + (2p-1) \ket{e}\bra{e} \\
+        &= (1-p) \ket{e}\bra{e}
+    \end{align}
+    \textbf{almost certainly messed up p's and q's here.}
+    
+    We need to extend the action of $\mathcal{E}_q$ to $B(\mathcal{H}_1 \otimes \mathcal{H}_2)$. The solution is to define $\mathcal{A}$ in the Kraus representation. The Kraus operators are 
+    \begin{align}
+       K_0 &= \sqrt{1-q}\begin{pmatrix}
+        1 & 0 & 0\\
+        0 & 1 & 0 \\
+        0 & 0 & 0
+        \end{pmatrix} \\
+        K_1 &= \sqrt{q}\begin{pmatrix}
+        0 & 0 & 0\\
+        0 & 0 & 0 \\
+        1 & 0 & 0
+        \end{pmatrix} \\
+        K_2 &= \sqrt{q}\begin{pmatrix}
+        0 & 0 & 0\\
+        0 & 0 & 0 \\
+        0 & 1 & 0
+        \end{pmatrix} \\
+        K_3 &= \sqrt{q}\begin{pmatrix}
+        0 & 0 & 0\\
+        0 & 0 & 0 \\
+        0 & 0 & 1
+        \end{pmatrix}
+    \end{align}
+    where the first three operators correspond to erasure on $B(\mathcal{H}_1 \oplus 0)$ and the last to doing nothing on $B(0 \oplus \mathcal{H}_2)$. This definition ensures that $\mathcal{E}_p = \mathcal{A} \circ \mathcal{E}_p^c $ for $p \geq \frac{1}{2}$.  We have $B(\mathcal{H}_1 \oplus 0), B(0\oplus \mathcal{H}_2): \mathcal{A}_p = \mathcal{E}_p \oplus \mathbb{I}$.
+    
+    For $\rho \in B(\mathcal{H}_1),$ $\sigma = (1-\lambda) \tilde{\rho} + \lambda \ket{e}\bra{e}$. This has the block matrix:
+    \begin{align}
+        \begin{pmatrix}
+        (1-\lambda)\rho & 0 \\
+        0 & \lambda
+        \end{pmatrix}
+    \end{align}
+    So 
+    \begin{align}
+        (\mathcal{E}_p \oplus \mathbb{I})(\sigma) = \begin{pmatrix}
+        \mathcal{E}_p((1-\lambda)\rho) & 0 \\
+        0 & \mathbb{I}(\lambda)
+        \end{pmatrix}
+    \end{align}
+    
+    Then for $\omega \in B(\mathcal{H}_1 \oplus \mathcal{H}_2)$ we have 
+    \begin{align}
+        \omega = \begin{pmatrix}
+        \omega_{\mathcal{H}_1} & * \\
+        * & \omega_{\mathcal{H}_2}
+        \end{pmatrix}
+    \end{align}
+    which has off-diagonal elements. We can get rid of these by measuring with respect to $\mathcal{H}_1 \oplus \mathcal{H}_2 = \mathcal{H}$. Let $P_2 = \ket{e}\bra{e}, P_1 = \mathbb{I}-\ket{e}\bra{e}$. Then $P_1 \omega P_1 + P_2 \omega P_2$ is diagonal. Finally, $\mathcal{A}_M = P_1 \cdot P_1 + P_2 \cdot P_2$ which implies $\mathcal{A}- \mathcal{A}_p \circ \mathcal{A}_M$ where $\mathcal{A}_p = \mathcal{E}_p \oplus \mathbb{I}$. 
+    \item amplitude damping channel $\mathcal{A}_{\gamma}$ for $\gamma \geq \frac{1}{2}$. 
+    \item depolarizing channel $\mathcal{D}_p$ for $p \geq \frac{1}{4}$
+\end{enumerate}
+
+\begin{definition}
+Let $\mathcal{N}: A \rightarrow B$ be a quantum channel and let $G$ be a group with unitary representations $U_{g}$ on $\mathcal{H}_A$ and $V_{g}$ on $\mathcal{H}_B$. Then $\mathcal{N}$ is called covariant with respect to $(G,U_g,V_g)$ if 
+\begin{align}
+    V_{g} \mathcal{N}(\cdot) V_g^{\dagger} = \mathcal{N}(U_g \cdot U_g^{\dagger})
+\end{align}
+for all $g\in G$.
+\end{definition}
+
+\noindent \textbf{Representation theory basics:}
+\begin{itemize}
+    \item $(\varphi,V)$ is a representation of $G$: $\varphi: G \rightarrow GL(V), \varphi(gh)=\varphi(g) \varphi(h)$. Subspace $W\leq V$ is called $G$-invariant, if $\varphi (g) w \in W \quad \forall w \in W, \forall g \in G$.
+    \item $\{0\},V$ are always $G$-invariant
+    \item $(\varphi, V)$ is called irreducible if $\{0\},V$ are the only $G$-inv subspaces.
+    \item Schur's lemma: $(\varphi,V), (\psi,W)$ representations of $G$. $G$-linear map $f: f \circ \varphi(g)=\psi(g) \circ f$. If $\varphi,\psi$ are irreducible representations, then either $V \ncong W$ and $f=0$ or $V\cong W$ and $f=\lambda \mathbb{I}_{V\rightarrow W}$ for some $\lambda \in \mathbb{C}.$
+\end{itemize}
+
+\noindent \textbf{Some examples:}
+\begin{itemize}
+    \item Pauli channels: $\rho \mapsto p_0 \rho + p_1 X\rho X + p_2 Y\rho Y+p_3 Z \rho Z$
+    
+    Covariance group: Pauli group, $P=\{\pm 1, \pm i\} \bigcup \{\mathbb{I},X,Y,Z\}$
+    
+    For $\theta_1,\vartheta_2 \in P$: $\vartheta_1 \theta_2 \cdot \theta_2^{\dagger} \vartheta_1^{\dagger} =\vartheta_2 \theta_1 \cdot \theta_1^{\dagger} \vartheta_2^{\dagger}$ 
+    
+    \item depolarizing channel: $\rho \mapsto (1-p)\rho + \frac{p}{3} (X\rho X + Y\rho Y + Z \rho Z)$. The covariance group is $\mathcal{U}(2)$. This is easy to see in the ''$q$-representation": $\rho \mapsto (1-q)\rho + q \text{tr}\rho \frac{1}{2} \mathbb{I}$
+    
+    \begin{align}
+        \mathcal{D}_q(U \rho U^{\dagger}) = (1-q) U\rho U^{\dagger} + q \text{tr}(U\rho U^{\dagger}) \frac{1}{2}\mathbb{I} = U \mathcal{D}_p (\rho) U^{\dagger}
+    \end{align}
+    
+    In $d\geq$ dimensions: $\rho \mapsto (1-q) \rho + q \text{tr}\rho \frac{1}{d} \mathbb{I}$. The covariance group is $\mathcal{U}(d)$. 
+    
+    \item Amplitude damping channel $A_{\gamma} = \{K_0, K_1\}$ as normal. Covariance group: $\{\mathbb{I},Z\} \cong \mathbb{Z}_2$.
+    
+    \item Erasure channel $\mathcal{E}_p (\rho) = (1-p)\rho + p \text{tr}\rho \ket{e}\bra{e}$. The covariance group is again $\mathcal{U}(2)$. Similarly, in $d\geq 2$ dimensions, the $d$-dimensional erasure channel with covariance group $\mathcal{U}(d)$.
+\end{itemize}
+
+\begin{proposition}
+A channel $\mathcal{N}: A \rightarrow B$ is $(G,U_g,V_g)$-covariant iff $\tau^{\mathcal{N}_{AB}}=(\bar{U}_g \otimes V_g) \tau^{\mathcal{N}}_{AB} (\bar{U}_g \otimes V_g)^{\dagger}$ for all $g \in G$.
+\end{proposition}
+
+\begin{proof}
+($\Rightarrow$): $V_g \mathcal{N} (\cdot) V_g^{\dagger} = \mathcal{N}(U_g \cdot U_g^{\dagger})$ for all $g\in G$. This is equivalent to $\mathcal{N}(\cdot) = V^{\dagger}_g \mathcal{N}(U_g \cdot U^{\dagger}_g)V_g$ for all $g\in G$.
+
+\begin{align}
+    \tau^{\mathcal{N}}_{AB} &= (\mathbb{I} \otimes \mathcal{N})(\gamma)\\
+    &= (\mathbb{I}_1 \otimes V_{g}^{\dagger})(\mathbb{I} \otimes \mathcal{N})\left((\mathbb{I}_1 \otimes U_g)\gamma(\mathbb{I} \otimes U^{\dagger}_g)\right)(\mathbb{I}_1 \otimes V_g) \\
+    &= (\mathbb{I} \otimes V_g)(\mathbb{I} \otimes \mathcal{N}) \left( (U_g^{T} \otimes \mathbb{I}_2) \gamma (U^T_g \otimes \mathbb{I}_2)^{\dagger} \right)(\mathbb{I} \otimes V_g) \\
+    &= (U^T_g \otimes V^{\dagger}_g)(\mathbb{I}\otimes \mathcal{N})(\gamma)(\bar{U}_g \otimes V_g)\\
+    \implies & \tau^{\mathcal{N}}_{AB}= (U^T_g \otimes V^{\dagger}_g) \tau^{\mathcal{N}}_{AB} (\bar{U}_g \otimes V_g) \quad \text{ for all} \quad g \in G
+\end{align}
+
+($\Leftarrow$): $\tau^{\mathcal{N}}_{AB} = (\bar{U}_g \otimes V_g) \tau^{\mathcal{N}}_{AB} (\bar{U}_g \otimes V_g)^{\dagger}$ for all $g\in G$. This implies $(U_g^T \otimes \mathbb{I}) \tau^{\mathcal{N}}_{AB} (U_g^T \otimes \mathbb{I})^{\dagger} = (\mathbb{I}\otimes V_g)\tau^{\mathcal{N}}_{AB}(\mathbb{I} \otimes V_g)^{\dagger}$.
+
+
+\noindent Recall the choi isomorphism: $\mathcal{N}(X) = \text{tr}_1 \tau^{\mathcal{N}}_{AB} (X^T \otimes \mathbb{I})$.
+
+\begin{align}
+    \mathcal{N}(U_g X U_g^{\dagger})&=\text{tr}_1 \left[\tau^{\mathcal{N}}_{AB}((U_g X U_g^{\dagger})^T \otimes \mathbb{I})\right]\\
+    &= \text{tr}_1 \left[(U_g^T \otimes \mathbb{I})\tau_{AB} (U_g^T \otimes \mathbb{I})^{\dagger}(X^T \otimes \mathbb{I})\right]\\
+    &= \text{tr}_1 \left[(\mathbb{I}\otimes V_g)\tau_{AB} (\mathbb{I} \otimes V_g)^{\dagger} (X^T \otimes \mathbb{I})\right]\\
+    &=V_g \text{tr}_1 \left[\tau^{\mathcal{N}_{AB}} (X^T \otimes \mathbb{I}) \right]V_g^{\dagger}\\
+    &= V_g \mathcal{N}(X)V_g^{\dagger}
+\end{align}
+\end{proof}
+
+\noindent \textbf{Problem:} with the above proposition is that it is basis-dependent (via the Choi operator). 
+
+\noindent\textbf{Solution:} is that there is also a basis independent version based on the Jamiolkowski operator $J^{\mathcal{N}}_{AB} = (\mathbb{I}\otimes \mathcal{N})(\mathbb{F}_{AA'})$ where $\mathbb{F}_{AB} =\ket{\gamma}\bra{\gamma}^{T_A}$. In terms of the Jamialkowski operator, $(G,U_g,V_g)$-covariance of $\mathbb{N}$ is equivalent to $(U_g \otimes V_g) J^{\mathcal{N}}_{AB} (U_g \otimes V_g)^{\dagger} = J_{AB}^{\mathcal{N}}$ for all $g \in G$.
+
+We note that a $d$-dimensional depolarizing channel; $\rho \mapsto (1-q)\rho + q \text{tr}\rho \frac{1}{d} \mathbb{I}_d$ has $\mathcal{U}(d)$ as its covariance group. 
+
+\begin{proposition}
+Let $\mathcal{N}: A\rightarrow B$ be a channel with input and output spaces of equal dimension $d$. If $U \mathcal{N}(\cdot) U^{\dagger}=\mathcal{N}(U \cdot U^{\dagger})$ for all $U\in mathcal{U}(d)$, then 
+\begin{align}
+    \mathcal{N}=(1-q) \cdot + q \text{tr}(\cdot) \frac{1}{d} \mathbb{I}_d
+\end{align}
+with $q=(1-f)/(1-d)$ where $f=\bra{\gamma}\tau^{\mathcal{N}}\ket{\gamma}$.
+\end{proposition}
 \bibliography{references}{}
 \bibliographystyle{unsrt}
 
